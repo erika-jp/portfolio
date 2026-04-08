@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Japanese Language Data Quality Review — Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;700&family=DM+Mono:ital,wght@0,400;0,500;1,400&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a2e;
+    --paper: #f5f0e8;
+    --accent: #c0392b;
+    --accent2: #2980b9;
+    --accent3: #27ae60;
+    --muted: #7f8c8d;
+    --rule: #d5cfc4;
+    --tag-bg: #fef9f0;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'DM Mono', monospace;
+    min-height: 100vh;
+    padding: 0 0 80px;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 48px 40px 36px;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: "品質";
+    position: absolute;
+    right: 30px;
+    top: -10px;
+    font-family: 'Noto Serif JP', serif;
+    font-size: 120px;
+    font-weight: 700;
+    opacity: 0.06;
+    color: #fff;
+    line-height: 1;
+  }
+  .header-label {
+    font-size: 10px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+  header h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(22px, 4vw, 34px);
+    font-weight: 800;
+    line-height: 1.2;
+    max-width: 560px;
+  }
+  header p {
+    margin-top: 16px;
+    font-size: 12px;
+    color: #aaa;
+    max-width: 480px;
+    line-height: 1.7;
+  }
+  .header-meta {
+    display: flex;
+    gap: 24px;
+    margin-top: 28px;
+    flex-wrap: wrap;
+  }
+  .meta-chip {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    padding: 6px 14px;
+    border-radius: 2px;
+    font-size: 11px;
+    letter-spacing: 1px;
+  }
+
+  /* MAIN LAYOUT */
+  main {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* SECTION TITLE */
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 52px 0 24px;
+  }
+  .section-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    color: var(--accent);
+    text-transform: uppercase;
+  }
+  .section-title h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+  }
+  .section-divider {
+    flex: 1;
+    height: 1px;
+    background: var(--rule);
+  }
+
+  /* REVIEW CARD */
+  .review-card {
+    border: 1px solid var(--rule);
+    background: #fff;
+    margin-bottom: 24px;
+    animation: fadeUp 0.5s ease both;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .review-card:nth-child(2) { animation-delay: 0.1s; }
+  .review-card:nth-child(3) { animation-delay: 0.2s; }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 18px;
+    border-bottom: 1px solid var(--rule);
+    background: #fafaf8;
+  }
+  .card-type {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .error-badge {
+    font-size: 10px;
+    padding: 3px 10px;
+    border-radius: 2px;
+    letter-spacing: 1px;
+    font-weight: 500;
+  }
+  .badge-error { background: #fdecea; color: var(--accent); }
+  .badge-ok { background: #eaf7ee; color: var(--accent3); }
+  .badge-warn { background: #fef9e7; color: #d68910; }
+
+  .card-body {
+    padding: 20px 18px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  @media (max-width: 600px) {
+    .card-body { grid-template-columns: 1fr; }
+  }
+
+  .col-label {
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+  .text-block {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 14px;
+    line-height: 1.9;
+    padding: 14px 16px;
+    border-radius: 2px;
+    min-height: 80px;
+  }
+  .text-block.before {
+    background: #fff8f8;
+    border-left: 3px solid var(--accent);
+  }
+  .text-block.after {
+    background: #f6fff8;
+    border-left: 3px solid var(--accent3);
+  }
+
+  mark.err {
+    background: #fcd4d0;
+    color: var(--accent);
+    border-radius: 2px;
+    padding: 0 2px;
+    text-decoration: line-through;
+  }
+  mark.fix {
+    background: #c8f0d4;
+    color: #1e8449;
+    border-radius: 2px;
+    padding: 0 2px;
+  }
+
+  /* ANNOTATIONS */
+  .annotations {
+    padding: 0 18px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .annotation {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    font-size: 12px;
+    line-height: 1.6;
+  }
+  .ann-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .ann-icon.type-grammar { background: #fdecea; color: var(--accent); }
+  .ann-icon.type-style { background: #eaf2ff; color: var(--accent2); }
+  .ann-icon.type-natural { background: #fef9e7; color: #d68910; }
+  .ann-text { color: #444; }
+  .ann-category {
+    font-weight: 500;
+    color: var(--ink);
+  }
+
+  /* LABEL TABLE */
+  .label-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    margin-top: 4px;
+  }
+  .label-table th {
+    background: var(--ink);
+    color: var(--paper);
+    text-align: left;
+    padding: 10px 14px;
+    font-family: 'Syne', sans-serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+  .label-table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+    line-height: 1.6;
+  }
+  .label-table tr:last-child td { border-bottom: none; }
+  .label-table tr:hover td { background: #fafaf8; }
+
+  .jp-text {
+    font-family: 'Noto Serif JP', serif;
+  }
+  .label-pill {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 2px;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .label-spelling { background: #fdecea; color: var(--accent); }
+  .label-grammar { background: #eaf2ff; color: var(--accent2); }
+  .label-fluency { background: #fef9e7; color: #c0780a; }
+  .label-correct { background: #eaf7ee; color: var(--accent3); }
+  .label-register { background: #f3e9ff; color: #7d3c98; }
+
+  .confidence-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .bar-track {
+    width: 60px;
+    height: 4px;
+    background: var(--rule);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 2px;
+    background: var(--accent3);
+  }
+  .bar-label { font-size: 11px; color: var(--muted); }
+
+  /* METRICS STRIP */
+  .metrics-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    margin-bottom: 40px;
+  }
+  @media (max-width: 500px) {
+    .metrics-strip { grid-template-columns: 1fr 1fr; }
+  }
+  .metric-cell {
+    background: #fff;
+    padding: 20px 16px;
+    text-align: center;
+  }
+  .metric-val {
+    font-family: 'Syne', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--ink);
+    line-height: 1;
+  }
+  .metric-val span {
+    font-size: 14px;
+    color: var(--accent);
+  }
+  .metric-desc {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 6px;
+  }
+
+  /* FOOTER NOTE */
+  .footer-note {
+    border-top: 1px solid var(--rule);
+    padding-top: 32px;
+    margin-top: 52px;
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.8;
+    max-width: 500px;
+  }
+  .footer-note strong { color: var(--ink); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-label">Portfolio — Language Data Quality</div>
+  <h1>Japanese Language Data<br>Quality Review Sample</h1>
+  <p>Demonstrates native-level Japanese proofreading, error classification, and data labeling capabilities for AI language data programs.</p>
+  <div class="header-meta">
+    <span class="meta-chip">Native Japanese</span>
+    <span class="meta-chip">Data Labeling</span>
+    <span class="meta-chip">Content QA</span>
+    <span class="meta-chip">Error Classification</span>
+  </div>
+</header>
+
+<main>
+
+  <!-- METRICS -->
+  <div class="section-title">
+    <span class="section-num">Overview</span>
+    <div class="section-divider"></div>
+  </div>
+
+  <div class="metrics-strip">
+    <div class="metric-cell">
+      <div class="metric-val">8<span>種</span></div>
+      <div class="metric-desc">Error Types Tagged</div>
+    </div>
+    <div class="metric-cell">
+      <div class="metric-val">3</div>
+      <div class="metric-desc">Review Samples</div>
+    </div>
+    <div class="metric-cell">
+      <div class="metric-val">100<span>%</span></div>
+      <div class="metric-desc">Native Proficiency</div>
+    </div>
+    <div class="metric-cell">
+      <div class="metric-val">L1</div>
+      <div class="metric-desc">Language Level</div>
+    </div>
+  </div>
+
+  <!-- SECTION 1: BEFORE/AFTER REVIEW -->
+  <div class="section-title">
+    <span class="section-num">01</span>
+    <h2>Before / After — Content Review</h2>
+    <div class="section-divider"></div>
+  </div>
+
+  <!-- Card 1 -->
+  <div class="review-card">
+    <div class="card-header">
+      <span class="card-type">Sample A — AI-generated output review</span>
+      <span class="error-badge badge-error">3 errors found</span>
+    </div>
+    <div class="card-body">
+      <div>
+        <div class="col-label">Before (Original)</div>
+        <div class="text-block before">
+          本製品は<mark class="err">使いやすくて</mark>、ユーザーにとって<mark class="err">非常に便宜</mark>です。設定も<mark class="err">簡単で出来る</mark>ため、初めての方にもお勧めします。
+        </div>
+      </div>
+      <div>
+        <div class="col-label">After (Corrected)</div>
+        <div class="text-block after">
+          本製品は<mark class="fix">操作が直感的で</mark>、ユーザーにとって<mark class="fix">非常に便利</mark>です。設定も<mark class="fix">簡単に行える</mark>ため、初めての方にもお勧めします。
+        </div>
+      </div>
+    </div>
+    <div class="annotations">
+      <div class="annotation">
+        <div class="ann-icon type-style">S</div>
+        <div class="ann-text"><span class="ann-category">文体：</span>「使いやすくて」は口語的。書き言葉として「操作が直感的で」に変更。</div>
+      </div>
+      <div class="annotation">
+        <div class="ann-icon type-grammar">G</div>
+        <div class="ann-text"><span class="ann-category">誤字：</span>「便宜」→「便利」。意味が異なる誤用。</div>
+      </div>
+      <div class="annotation">
+        <div class="ann-icon type-natural">N</div>
+        <div class="ann-text"><span class="ann-category">自然さ：</span>「簡単で出来る」は不自然な接続。「簡単に行える」に修正。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card 2 -->
+  <div class="review-card">
+    <div class="card-header">
+      <span class="card-type">Sample B — Machine translation post-edit</span>
+      <span class="error-badge badge-warn">2 errors found</span>
+    </div>
+    <div class="card-body">
+      <div>
+        <div class="col-label">Before (MT Output)</div>
+        <div class="text-block before">
+          会議は<mark class="err">明日の朝の9時から</mark>始まります。全ての<mark class="err">参加者達</mark>は時間通りに来てください。
+        </div>
+      </div>
+      <div>
+        <div class="col-label">After (Post-edited)</div>
+        <div class="text-block after">
+          会議は<mark class="fix">明日午前9時から</mark>始まります。<mark class="fix">参加者</mark>は全員、時間通りにお集まりください。
+        </div>
+      </div>
+    </div>
+    <div class="annotations">
+      <div class="annotation">
+        <div class="ann-icon type-style">S</div>
+        <div class="ann-text"><span class="ann-category">冗長性：</span>「明日の朝の9時」は英語直訳調。「明日午前9時」が自然な日本語表現。</div>
+      </div>
+      <div class="annotation">
+        <div class="ann-icon type-grammar">G</div>
+        <div class="ann-text"><span class="ann-category">文法：</span>「参加者達」は誤用。日本語では集合名詞に「達」は付けない。また文末を丁寧な命令形に統一。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card 3 -->
+  <div class="review-card">
+    <div class="card-header">
+      <span class="card-type">Sample C — No errors</span>
+      <span class="error-badge badge-ok">Passed QA</span>
+    </div>
+    <div class="card-body">
+      <div>
+        <div class="col-label">Source Text</div>
+        <div class="text-block before" style="border-left-color: var(--accent3); background: #f6fff8;">
+          この度はご注文いただき、誠にありがとうございます。商品は3営業日以内に発送いたします。ご不明な点がございましたら、お気軽にお問い合わせください。
+        </div>
+      </div>
+      <div>
+        <div class="col-label">Review Result</div>
+        <div class="text-block after">
+          文法・表記ともに問題なし。敬語の使用も適切。読点の位置、句読点のバランスも良好。そのまま使用可能と判断。
+        </div>
+      </div>
+    </div>
+    <div class="annotations">
+      <div class="annotation">
+        <div class="ann-icon type-natural" style="background:#eaf7ee; color:#1e8449;">✓</div>
+        <div class="ann-text"><span class="ann-category">判定：</span>敬語レベル、文体、句読点のバランスすべて適切。QA通過。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: DATA LABELING -->
+  <div class="section-title">
+    <span class="section-num">02</span>
+    <h2>Data Labeling — Error Classification</h2>
+    <div class="section-divider"></div>
+  </div>
+
+  <div class="review-card">
+    <div class="card-header">
+      <span class="card-type">Structured error tagging — 10 sentence dataset</span>
+      <span class="error-badge badge-ok">Annotation complete</span>
+    </div>
+    <table class="label-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Japanese Text</th>
+          <th>Error Label</th>
+          <th>Confidence</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>001</td>
+          <td class="jp-text">今日は天気がいいので、散歩しましょう。</td>
+          <td><span class="label-pill label-correct">Correct</span></td>
+          <td>
+            <div class="confidence-bar">
+              <div class="bar-track"><div class="bar-fill" style="width:100%"></div></div>
+              <span class="bar-label">1.00</span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>002</td>
+          <td class="jp-text">彼女は昨日図書館で本を<span style="color:var(--accent)">読みましたした</span>。</td>
+          <td><span class="label-pill label-spelling">Spelling / Typo</span></td>
+          <td>
+            <div class="confidence-bar">
+              <div class="bar-track"><div class="bar-fill" style="width:100%"></div></div>
+              <span class="bar-label">1.00</span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>003</td>
+          <td class="jp-text">この問題は<span style="color:var(--accent)">難しくないです</span>ない。</td>
+          <td><span class="label-pill label-grammar">Grammar</span></td>
+          <td>
+            <div class="confidence-bar">
+              <div class="bar-track"><div class="bar-fill" style="width:98%"></div></div>
+              <span class="bar-label">0.98</span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>004</td>
+          <td class="jp-text">先生は<span style="color:#c0780a">僕に宿題やれって言った</span>。（公式文書内）</td>
+          <td><span class="label-pill label-register">Register Error</span></td>
+          <td>
+            <div class="confidence-bar">
+              <div class="bar-track"><div class="bar-fill" style="width:95%"></div></div>
+              <span class="bar-label">0.95</span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>005</td>
+          <td class="jp-text">電車が<span style="color:var(--accent)">遅れて来た</span>ため、会議に間に合いませんでした。</td>
+          <td><span class="label-pill label-fluency">Fluency</span></td>
+          <td>
+            <div class="confidence-bar">
+              <div class="bar-track"><div class="bar-fill" style="width:88%"></div></div>
+              <span class="bar-label">0.88</span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>006</td>
+          <td class="jp-text">新しいプロジェクトの開始は来月を予定しています。</td>
+          <td><span class="label-pill label-correct">Correct</span></td>
+          <td>
+            <div class="confidence-bar">
+              <div class="bar-track"><div class="bar-fill" style="width:100%"></div></div>
+              <span class="bar-label">1.00</span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>007</td>
+          <td class="jp-text">彼は<span style="color:var(--accent)">疲れ果てして</span>帰宅した。</td>
+          <td><span class="label-pill label-grammar">Grammar</span></td>
+          <td>
+            <div class="confidence-bar">
+              <div class="bar-track"><div class="bar-fill" style="width:100%"></div></div>
+              <span class="bar-label">1.00</span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>008</td>
+          <td class="jp-text">その映画は非常に<span style="color:var(--accent)">感動的でした感動します</span>。</td>
+          <td><span class="label-pill label-spelling">Spelling / Typo</span></td>
+          <td>
+            <div class="confidence-bar">
+              <div class="bar-track"><div class="bar-fill" style="width:97%"></div></div>
+              <span class="bar-label">0.97</span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>009</td>
+          <td class="jp-text">ご連絡いただきまして、<span style="color:#c0780a">どうもありがとう</span>ございました。</td>
+          <td><span class="label-pill label-register">Register Error</span></td>
+          <td>
+            <div class="confidence-bar">
+              <div class="bar-track"><div class="bar-fill" style="width:85%"></div></div>
+              <span class="bar-label">0.85</span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>010</td>
+          <td class="jp-text">春になると、公園には多くの花が咲き始めます。</td>
+          <td><span class="label-pill label-correct">Correct</span></td>
+          <td>
+            <div class="confidence-bar">
+              <div class="bar-track"><div class="bar-fill" style="width:100%"></div></div>
+              <span class="bar-label">1.00</span>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="footer-note">
+    <strong>About this portfolio piece</strong><br>
+    All samples were created to demonstrate native Japanese language quality assessment skills. Error classification follows standard annotation guidelines including grammar, spelling, fluency, and register categories. Reviewer: Native Japanese speaker (L1), based in Japan.
+  </div>
+
+</main>
+</body>
+</html>
