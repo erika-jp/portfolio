@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Localization Sample – Travel & Tourism Content | Japanese Localization</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ivory: #FAF7F2;
+      --gold: #C9A84C;
+      --gold-light: #E8D5A3;
+      --deep: #2C2416;
+      --brown: #6B4F2A;
+      --warm-gray: #9A8E82;
+      --surface: #F2EDE4;
+      --white: #FFFDF9;
+      --red-soft: #D95F5F;
+      --green-soft: #4E8C6A;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background-color: var(--ivory);
+      color: var(--deep);
+      font-weight: 300;
+    }
+
+    /* ─── HEADER ─── */
+    header {
+      background: var(--white);
+      border-bottom: 2px solid var(--gold-light);
+      padding: 64px 40px 52px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--gold-light), var(--gold), var(--gold-light));
+    }
+
+    .label-top {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--warm-gray);
+      margin-bottom: 20px;
+    }
+
+    header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(32px, 5vw, 52px);
+      font-weight: 700;
+      color: var(--deep);
+      line-height: 1.15;
+      margin-bottom: 12px;
+    }
+
+    header h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(18px, 3vw, 26px);
+      font-weight: 400;
+      font-style: italic;
+      color: var(--brown);
+      margin-bottom: 20px;
+    }
+
+    .header-desc {
+      font-size: 14px;
+      color: var(--warm-gray);
+      line-height: 1.7;
+      max-width: 480px;
+      margin: 0 auto 24px;
+    }
+
+    .byline {
+      font-size: 14px;
+      color: var(--warm-gray);
+    }
+    .byline strong {
+      color: var(--gold);
+      font-weight: 500;
+    }
+
+    /* ─── MAIN ─── */
+    main {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 56px 40px 80px;
+    }
+
+    /* ─── SECTION HEADERS ─── */
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .label-num {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: var(--gold);
+      color: var(--white);
+      font-size: 12px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .label-text {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--warm-gray);
+    }
+
+    /* ─── SOURCE CARD ─── */
+    .source-section { margin-bottom: 48px; }
+
+    .source-card {
+      background: var(--white);
+      border: 1px solid var(--gold-light);
+      border-left: 4px solid var(--gold);
+      border-radius: 12px;
+      padding: 28px 32px;
+      font-size: 15.5px;
+      line-height: 1.9;
+      color: var(--deep);
+      font-style: italic;
+    }
+
+    /* ─── COMPARISON ─── */
+    .comparison-section { margin-bottom: 48px; }
+
+    .comparison-heading {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--deep);
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--gold-light);
+    }
+
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    @media (max-width: 600px) {
+      .comparison-grid { grid-template-columns: 1fr; }
+    }
+
+    .col-card {
+      border-radius: 12px;
+      padding: 24px 26px;
+      font-size: 14.5px;
+      line-height: 2;
+    }
+
+    .col-card.bad {
+      background: #FDF2F2;
+      border: 1px solid #F0C8C8;
+    }
+    .col-card.good {
+      background: #F2FAF6;
+      border: 1px solid #B8DEC9;
+    }
+
+    .col-head {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(0,0,0,0.07);
+    }
+    .col-card.bad .col-head { color: var(--red-soft); }
+    .col-card.good .col-head { color: var(--green-soft); }
+
+    .col-icon { font-size: 14px; }
+
+    /* ─── NOTES ─── */
+    .notes-section { margin-bottom: 48px; }
+
+    .notes-heading {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--deep);
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--gold-light);
+    }
+
+    .note-item {
+      display: grid;
+      grid-template-columns: 44px 1fr;
+      gap: 0;
+      margin-bottom: 20px;
+      background: var(--white);
+      border: 1px solid #EDE8DF;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .note-num-col {
+      background: var(--gold);
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding-top: 22px;
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--white);
+    }
+
+    .note-body {
+      padding: 20px 24px;
+    }
+
+    .note-title {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--deep);
+      margin-bottom: 8px;
+    }
+    .note-title em {
+      font-style: normal;
+      color: var(--warm-gray);
+      font-weight: 300;
+      font-size: 13px;
+    }
+
+    .note-text {
+      font-size: 13.5px;
+      line-height: 1.8;
+      color: #5A4E44;
+    }
+
+    /* ─── SKILLS ─── */
+    .skills-section {
+      background: var(--deep);
+      border-radius: 14px;
+      padding: 32px 36px;
+    }
+
+    .skills-section h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      color: var(--gold-light);
+      margin-bottom: 20px;
+    }
+
+    .skills-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .skill-chip {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(201,168,76,0.3);
+      color: #EDE8DF;
+      font-size: 13px;
+      padding: 7px 16px;
+      border-radius: 20px;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      text-align: center;
+      padding: 30px 20px;
+      font-size: 12px;
+      color: var(--warm-gray);
+      border-top: 1px solid var(--gold-light);
+    }
+
+    @media (max-width: 600px) {
+      header, main { padding-left: 20px; padding-right: 20px; }
+      .source-card { padding: 20px; }
+      .skills-section { padding: 24px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="label-top">Portfolio Sample · Japanese Localization</div>
+    <h1>Localization Before &amp; After</h1>
+    <h2>Travel &amp; Tourism Content</h2>
+    <p class="header-desc">Demonstrating the difference between direct translation and true cultural localization for Japanese audiences.</p>
+    <div class="byline">by <strong>Erika H.</strong> — Native Japanese Localizer &amp; Researcher</div>
+  </header>
+
+  <main>
+
+    <!-- 1. Source -->
+    <div class="source-section">
+      <div class="section-label">
+        <div class="label-num">1</div>
+        <span class="label-text">英語原文（Original English Text）</span>
+      </div>
+      <div class="source-card">
+        "Kyoto is a must-visit destination packed with stunning temples, traditional tea houses, and world-class cuisine. Whether you're a first-time traveler or a seasoned explorer, Kyoto's vibrant culture and breathtaking scenery will leave you speechless. Don't miss the iconic bamboo grove at Arashiyama — it's absolutely Instagram-worthy!"
+      </div>
+    </div>
+
+    <!-- 2. Comparison -->
+    <div class="comparison-section">
+      <div class="comparison-heading">Translation Comparison</div>
+      <div class="comparison-grid">
+
+        <div class="col-card bad">
+          <div class="col-head"><span class="col-icon">✕</span> Direct Translation（直訳）</div>
+          <p>京都は必ず訪れるべき目的地で、素晴らしい寺院、伝統的なティーハウス、ワールドクラスの料理が詰まっています。あなたが初めての旅行者であれ、熟練した探検家であれ、京都の活気ある文化と息をのむ景色はあなたを言葉を失わせるでしょう。嵐山のアイコニックな竹林をお見逃しなく——インスタグラムに投稿する価値が絶対あります！</p>
+        </div>
+
+        <div class="col-card good">
+          <div class="col-head"><span class="col-icon">✓</span> Localized（ローカライズ版）</div>
+          <p>京都は、歴史ある寺社仏閣、風情ある茶屋、そして奥深い和の食文化が息づく、一度は訪れたい古都です。旅慣れた方も、初めての方も、その豊かな文化と美しい風景にきっと心を奪われるでしょう。嵐山の竹林は、静寂の中に日本の美しさを感じられる、見逃せないスポットです。</p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 3. Notes -->
+    <div class="notes-section">
+      <div class="notes-heading">Localization Notes</div>
+
+      <div class="note-item">
+        <div class="note-num-col">1</div>
+        <div class="note-body">
+          <div class="note-title">Tone &amp; Flow Adjustment <em>（トーンと文脈の調整）</em></div>
+          <div class="note-text">直訳の「必ず訪れるべき目的地で〜詰まっています」は不自然です。「歴史ある寺社仏閣、風情ある茶屋、そして奥深い和の食文化が息づく、一度は訪れたい古都です」と意訳することで、旅行雑誌のような自然で洗練された日本語の表現にしました。</div>
+        </div>
+      </div>
+
+      <div class="note-item">
+        <div class="note-num-col">2</div>
+        <div class="note-body">
+          <div class="note-title">Audience-Centric Phrasing <em>（ターゲット層に合わせた表現）</em></div>
+          <div class="note-text">「あなたが初めての旅行者であれ、熟練した探検家であれ」という表現は英語的です。日本語の観光コピーとして自然な「旅慣れた方も、初めての方も」という順序と表現に調整し、読者にスッと入り込む形にしました。</div>
+        </div>
+      </div>
+
+      <div class="note-item">
+        <div class="note-num-col">3</div>
+        <div class="note-body">
+          <div class="note-title">Cultural Nuance <em>（文化的なニュアンスの反映）</em></div>
+          <div class="note-text">「息をのむ景色はあなたを言葉を失わせるでしょう」という直訳は誇張されすぎた印象を与えます。「その豊かな文化と美しい風景にきっと心を奪われるでしょう」とすることで、日本人の感性に合った情緒的な表現にローカライズしました。</div>
+        </div>
+      </div>
+
+      <div class="note-item">
+        <div class="note-num-col">4</div>
+        <div class="note-body">
+          <div class="note-title">Platform-Appropriate Context <em>（プラットフォームに適した文脈）</em></div>
+          <div class="note-text">「インスタグラムに投稿する価値が絶対あります！」という直訳的な表現を避け、「静寂の中に日本の美しさを感じられる、見逃せないスポットです」と表現することで、竹林の持つ本来の魅力（静けさや美しさ）を伝えつつ、写真映えする場所であることを品良く伝えています。</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 4. Skills -->
+    <div class="skills-section">
+      <h3>このサンプルで示したスキル</h3>
+      <div class="skills-wrap">
+        <span class="skill-chip">日本語ローカライズ</span>
+        <span class="skill-chip">文化的ニュアンスの反映</span>
+        <span class="skill-chip">ターゲット読者分析</span>
+        <span class="skill-chip">翻訳品質評価</span>
+        <span class="skill-chip">旅行・観光分野</span>
+        <span class="skill-chip">英日翻訳</span>
+        <span class="skill-chip">コピーライティング</span>
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+    Portfolio sample by Erika H. — Native Japanese Proofreader &amp; Localizer · erika-jp.github.io/portfolio
+  </footer>
+
+</body>
+</html>
