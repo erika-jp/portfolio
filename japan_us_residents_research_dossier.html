@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Research Dossier: U.S.-Born Residents in Japan — Public Data Mapping</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a18;
+    --paper: #f5f0e8;
+    --accent: #b5370a;
+    --rule: #c8bfaa;
+    --muted: #6b6458;
+    --highlight: #e8dfc8;
+    --green: #2a5c3f;
+    --tag-bg: #e2d9c5;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Source Sans 3', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    font-size: 15px;
+    line-height: 1.7;
+    padding: 40px 20px 80px;
+  }
+
+  .page {
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  /* ── Header ── */
+  .header {
+    border-top: 3px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+    padding: 28px 0 20px;
+    margin-bottom: 40px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 20px;
+    align-items: end;
+  }
+
+  .doc-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  h1 {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 26px;
+    line-height: 1.3;
+    font-weight: 700;
+    max-width: 560px;
+  }
+
+  .meta-block {
+    text-align: right;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.9;
+    white-space: nowrap;
+  }
+
+  .meta-block strong {
+    color: var(--ink);
+  }
+
+  /* ── Section ── */
+  .section {
+    margin-bottom: 44px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 18px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .section-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    font-weight: 500;
+    letter-spacing: 0.05em;
+  }
+
+  h2 {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+  }
+
+  /* ── Agency Cards ── */
+  .agency-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  @media (max-width: 600px) {
+    .agency-grid { grid-template-columns: 1fr; }
+    .header { grid-template-columns: 1fr; }
+    .meta-block { text-align: left; }
+  }
+
+  .agency-card {
+    background: white;
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--accent);
+    padding: 16px 18px;
+    border-radius: 2px;
+  }
+
+  .agency-card .ja-name {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+
+  .agency-card .en-name {
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 8px;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  .agency-card p {
+    font-size: 13px;
+    line-height: 1.6;
+    color: #3a3530;
+    margin-bottom: 10px;
+  }
+
+  .dataset-link {
+    display: inline-block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--green);
+    text-decoration: none;
+    border-bottom: 1px dashed var(--green);
+    word-break: break-all;
+  }
+
+  .dataset-link:hover { color: var(--accent); border-color: var(--accent); }
+
+  /* ── Data Table ── */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+  }
+
+  .data-table th {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-align: left;
+    padding: 8px 12px;
+    background: var(--highlight);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .data-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+  }
+
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table tr:hover td { background: #f0ebe0; }
+
+  .data-table td:first-child {
+    font-weight: 600;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+
+  .tag {
+    display: inline-block;
+    background: var(--tag-bg);
+    color: var(--ink);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    padding: 2px 7px;
+    border-radius: 2px;
+    margin-right: 4px;
+    letter-spacing: 0.05em;
+  }
+
+  .tag.annual { background: #daeada; color: var(--green); }
+  .tag.limited { background: #ffe0d6; color: #8b2500; }
+  .tag.free { background: #dde8f5; color: #1a3a6b; }
+
+  /* ── Definition Block ── */
+  .def-block {
+    background: white;
+    border: 1px solid var(--rule);
+    padding: 18px 20px;
+    margin-bottom: 12px;
+    border-radius: 2px;
+  }
+
+  .def-term {
+    font-family: 'Libre Baskerville', serif;
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+
+  .def-term .ja {
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 400;
+  }
+
+  .def-body {
+    font-size: 13.5px;
+    color: #3a3530;
+    line-height: 1.65;
+  }
+
+  /* ── Pathway List ── */
+  .pathway {
+    counter-reset: step;
+  }
+
+  .pathway-item {
+    display: grid;
+    grid-template-columns: 32px 1fr;
+    gap: 12px;
+    margin-bottom: 14px;
+    align-items: start;
+  }
+
+  .step-num {
+    width: 28px;
+    height: 28px;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .pathway-item p {
+    font-size: 13.5px;
+    line-height: 1.65;
+  }
+
+  .pathway-item strong { font-weight: 600; }
+
+  /* ── Gap Box ── */
+  .gap-box {
+    background: #fff8f5;
+    border: 1px solid #e8c4b0;
+    border-left: 3px solid var(--accent);
+    padding: 16px 18px;
+    margin-bottom: 10px;
+    border-radius: 2px;
+    font-size: 13.5px;
+    line-height: 1.65;
+  }
+
+  .gap-box strong {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: var(--accent);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* ── Footer ── */
+  .footer {
+    margin-top: 56px;
+    padding-top: 16px;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .footer p {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  .author-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 4px 10px;
+    border-radius: 2px;
+    letter-spacing: 0.08em;
+  }
+
+  /* ── Prose ── */
+  .prose {
+    font-size: 14px;
+    line-height: 1.75;
+    color: #2e2b26;
+    max-width: 720px;
+  }
+
+  .prose + .prose { margin-top: 10px; }
+
+  .inline-note {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    border-left: 2px solid var(--rule);
+    padding-left: 10px;
+    margin-top: 10px;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <header class="header">
+    <div>
+      <div class="doc-label">Research Dossier — Public Population Data</div>
+      <h1>U.S. Citizens &amp; U.S.-Born Residents in Japan<br>Official Data Source Mapping</h1>
+    </div>
+    <div class="meta-block">
+      <div><strong>Researcher:</strong> Erika H.</div>
+      <div><strong>Coverage:</strong> Japan</div>
+      <div><strong>Scope:</strong> Initial (10 hrs)</div>
+      <div><strong>Date:</strong> 2026-04-26</div>
+      <div><strong>Language:</strong> JP / EN</div>
+    </div>
+  </header>
+
+  <!-- Section 1 -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <h2>データ公開機関</h2>
+    </div>
+    <div class="agency-grid">
+
+      <div class="agency-card">
+        <div class="ja-name">出入国在留管理庁</div>
+        <div class="en-name">Immigration Services Agency of Japan (ISA)</div>
+        <p>Publishes the <em>在留外国人統計</em> (Statistics on Foreign Residents), broken down by nationality, status of residence, prefecture, and age. Primary source for U.S. national counts in Japan.</p>
+        <a class="dataset-link" href="https://www.moj.go.jp/isa/policies/statistics/toukei_ichiran_touroku.html" target="_blank">moj.go.jp — 在留外国人統計</a>
+      </div>
+
+      <div class="agency-card">
+        <div class="ja-name">総務省統計局</div>
+        <div class="en-name">Statistics Bureau of Japan (SBJ)</div>
+        <p>Conducts the <em>国勢調査</em> (National Census, every 5 years). Includes country-of-birth data for residents. Supplemented by <em>人口推計</em> (Population Estimates, monthly/annual).</p>
+        <a class="dataset-link" href="https://www.stat.go.jp/data/kokusei/index.html" target="_blank">stat.go.jp — 国勢調査</a>
+        <br><a class="dataset-link" href="https://www.stat.go.jp" target="_blank" style="margin-top:4px; display:inline-block;">stat.go.jp — トップ</a>
+      </div>
+
+      <div class="agency-card">
+        <div class="ja-name">e-Stat（政府統計の総合窓口）</div>
+        <div class="en-name">e-Stat — Portal for Japanese Government Statistics</div>
+        <p>Aggregated portal hosting machine-readable datasets from ISA, SBJ, and other ministries. Allows CSV/Excel download and API access. Primary tool for data retrieval.</p>
+        <a class="dataset-link" href="https://www.e-stat.go.jp" target="_blank">e-stat.go.jp</a>
+      </div>
+
+      <div class="agency-card">
+        <div class="ja-name">外務省</div>
+        <div class="en-name">Ministry of Foreign Affairs (MOFA)</div>
+        <p>Publishes <em>海外在留邦人数調査統計</em> (statistics on Japanese nationals abroad) — relevant for cross-referencing U.S.–Japan bilateral flows. Does not publish inbound U.S. resident counts directly.</p>
+        <a class="dataset-link" href="https://www.mofa.go.jp/mofaj/toko/tokei/hojin/" target="_blank">mofa.go.jp — 海外在留邦人数</a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Section 2 -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <h2>主要データセット一覧</h2>
+    </div>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Dataset</th>
+          <th>Publisher</th>
+          <th>U.S.-Specific Data</th>
+          <th>Frequency</th>
+          <th>Access</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>在留外国人統計</td>
+          <td>ISA / 法務省</td>
+          <td>Count by nationality (including USA), status of residence, prefecture, sex, age</td>
+          <td><span class="tag annual">Annual + Quarterly</span></td>
+          <td><span class="tag free">Free / CSV</span></td>
+        </tr>
+        <tr>
+          <td>国勢調査（国籍・出生地）</td>
+          <td>統計局</td>
+          <td>Country of birth; nationality; household type</td>
+          <td><span class="tag limited">Every 5 yrs</span></td>
+          <td><span class="tag free">Free / e-Stat</span></td>
+        </tr>
+        <tr>
+          <td>人口推計</td>
+          <td>統計局</td>
+          <td>Aggregate foreign population only; no nationality breakdown</td>
+          <td><span class="tag annual">Monthly</span></td>
+          <td><span class="tag free">Free</span></td>
+        </tr>
+        <tr>
+          <td>住民基本台帳人口移動報告</td>
+          <td>総務省</td>
+          <td>Registered address changes; includes foreigners with residence card</td>
+          <td><span class="tag annual">Annual</span></td>
+          <td><span class="tag free">Free / e-Stat</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="inline-note" style="margin-top:12px;">※ As of 2026-04-26. Dataset structures and URLs subject to change. Verify at e-stat.go.jp before use.</p>
+  </section>
+
+  <!-- Section 3 -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <h2>現地での定義・用語</h2>
+    </div>
+
+    <div class="def-block">
+      <div class="def-term">在留外国人 <span class="ja">Zairyū Gaikokujin</span></div>
+      <div class="def-body">Foreign nationals holding a valid <em>在留カード</em> (Residence Card) or <em>特別永住者証明書</em> (Special Permanent Resident Certificate) and registered in Japan's residency system. Excludes short-stay tourists and holders of short-term visas (90 days or less). This is the primary unit of count in ISA statistics.</div>
+    </div>
+
+    <div class="def-block">
+      <div class="def-term">国籍 vs 出生地 <span class="ja">Nationality vs. Country of Birth</span></div>
+      <div class="def-body">ISA statistics classify by <strong>nationality (国籍)</strong>. The National Census additionally captures <strong>country of birth (出生国)</strong>, making it the only source allowing identification of U.S.-born individuals who may hold non-U.S. passports (e.g., naturalized Japanese citizens born in the U.S.).</div>
+    </div>
+
+    <div class="def-block">
+      <div class="def-term">在留資格 <span class="ja">Status of Residence</span></div>
+      <div class="def-body">Legal category under which a foreigner resides in Japan. ISA data disaggregates U.S. nationals by status (e.g., <em>永住者</em> Permanent Resident, <em>技術・人文知識・国際業務</em> Engineer/Specialist, <em>日本人の配偶者等</em> Spouse of Japanese National, <em>留学</em> Student, etc.).</div>
+    </div>
+  </section>
+
+  <!-- Section 4 -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <h2>在留・市民権の取得経路（米国市民 → 日本）</h2>
+    </div>
+    <div class="pathway">
+
+      <div class="pathway-item">
+        <div class="step-num">1</div>
+        <p><strong>Entry visa → Status of Residence:</strong> U.S. citizens enter Japan on a temporary visitor exemption (最大90日) or apply for a specific <em>在留資格</em> visa before entry. Upon arrival, they are issued a Residence Card if staying longer than 3 months.</p>
+      </div>
+
+      <div class="pathway-item">
+        <div class="step-num">2</div>
+        <p><strong>Resident Registration (住民登録):</strong> Those staying more than 3 months must register at their local municipal office (<em>市区町村</em>). This is the point at which they enter population databases linked to the <em>住民基本台帳</em>.</p>
+      </div>
+
+      <div class="pathway-item">
+        <div class="step-num">3</div>
+        <p><strong>Permanent Residency (永住許可):</strong> Requires generally 10 years of continuous residence (with 5 years on a working visa), stable income, and good conduct. Spouses of Japanese nationals may qualify after 3 years. U.S. nationals are among the top nationalities holding this status.</p>
+      </div>
+
+      <div class="pathway-item">
+        <div class="step-num">4</div>
+        <p><strong>Naturalization (帰化):</strong> Requires 5+ years of continuous residence, renunciation of prior citizenship (Japan does not legally recognize dual nationality for adults), and language/civics criteria. Naturalized citizens exit all foreign national statistics and appear only in census country-of-birth data.</p>
+      </div>
+
+    </div>
+    <p class="inline-note">※ Pathway rules as of 2026. Immigration law amendments should be verified via the ISA official site.</p>
+  </section>
+
+  <!-- Section 5 -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-num">05</span>
+      <h2>データの空白・制限事項</h2>
+    </div>
+
+    <div class="gap-box">
+      <strong>Gap 01 — No Direct "U.S. Citizen" Count</strong>
+      ISA tracks <em>nationality of passport</em>, not citizenship. A U.S.-born person who has naturalized to another nationality will not appear in the "U.S." category. Dual nationals are classified by the nationality declared at registration.
+    </div>
+
+    <div class="gap-box">
+      <strong>Gap 02 — Short-Stay Visitors Excluded</strong>
+      Neither ISA nor census data covers U.S. nationals on tourist or short-term visas (under 90 days). Japan Tourism Agency (観光庁) publishes entry/exit statistics by nationality, but these count trips, not individuals.
+    </div>
+
+    <div class="gap-box">
+      <strong>Gap 03 — Census Periodicity</strong>
+      Country-of-birth data is only available every 5 years (last: 2020, next: 2025 results expected ~2026). For intercensal years, nationality-based ISA data is the only available proxy.
+    </div>
+
+    <div class="gap-box">
+      <strong>Gap 04 — U.S. Military Personnel</strong>
+      U.S. military personnel and their dependents stationed in Japan under the SOFA agreement are generally not counted in ISA resident statistics. The U.S. Department of Defense publishes its own count separately, not through Japanese government sources.
+    </div>
+
+    <div class="gap-box">
+      <strong>Gap 05 — Undocumented / Overstay Population</strong>
+      ISA separately publishes overstay (不法残留者) estimates annually, disaggregated by nationality. However, these are estimates and the U.S. figure is typically small relative to total overstay numbers.
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div>
+      <p>SOURCES: 出入国在留管理庁 / 総務省統計局 / e-Stat / 外務省 — All sources are publicly available official Japanese government publications.</p>
+      <p style="margin-top:4px;">This dossier covers publicly accessible data only. No proprietary or restricted-access sources were used.</p>
+    </div>
+    <div class="author-tag">Researcher: Erika H. — erika-jp.github.io/portfolio</div>
+  </footer>
+
+</div>
+</body>
+</html>
