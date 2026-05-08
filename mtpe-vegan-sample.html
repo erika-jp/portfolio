@@ -1,498 +1,488 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MTPE Sample – Vegan Social Media Content | Japanese Localization</title>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --cream: #F7F3EC;
-      --sage: #7A9E7E;
-      --sage-light: #B8D4BA;
-      --sage-dark: #4A7050;
-      --soil: #3D2B1F;
-      --warm-gray: #8C7B72;
-      --accent: #C4763A;
-      --surface: #EFEBE3;
-      --white: #FDFAF5;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MTPE Sample · Erika Hashimoto</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a1a;
+    --muted: #6b6b6b;
+    --border: #e0ddd8;
+    --bg: #faf9f7;
+    --card: #ffffff;
+    --accent: #2d5a3d;
+    --accent-light: #edf4ef;
+    --warn: #7a3a1e;
+    --warn-light: #fdf0eb;
+    --tag-bg: #f0ede8;
+  }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
 
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background-color: var(--cream);
-      color: var(--soil);
-      min-height: 100vh;
-      font-weight: 300;
-    }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    font-size: 15px;
+    line-height: 1.7;
+  }
 
-    /* ─── HEADER ─── */
-    header {
-      background: var(--sage-dark);
-      padding: 60px 40px 50px;
-      position: relative;
-      overflow: hidden;
-    }
+  /* Header */
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 18px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--card);
+  }
 
-    header::before {
-      content: '';
-      position: absolute;
-      width: 400px; height: 400px;
-      border-radius: 50%;
-      background: var(--sage);
-      opacity: 0.25;
-      top: -150px; right: -100px;
-    }
-    header::after {
-      content: '';
-      position: absolute;
-      width: 200px; height: 200px;
-      border-radius: 50%;
-      background: var(--sage-light);
-      opacity: 0.2;
-      bottom: -80px; left: 60px;
-    }
+  .breadcrumb {
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
 
-    .header-inner {
-      max-width: 820px;
-      margin: 0 auto;
-      position: relative;
-      z-index: 1;
-    }
+  .breadcrumb a {
+    color: var(--accent);
+    text-decoration: none;
+  }
 
-    .badge {
-      display: inline-block;
-      background: var(--accent);
-      color: var(--white);
-      font-size: 11px;
-      font-weight: 500;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      padding: 5px 14px;
-      border-radius: 20px;
-      margin-bottom: 20px;
-    }
+  .breadcrumb span { margin: 0 6px; }
 
-    header h1 {
-      font-family: 'DM Serif Display', serif;
-      font-size: clamp(28px, 5vw, 44px);
-      color: var(--white);
-      line-height: 1.2;
-      margin-bottom: 14px;
-    }
+  .badge {
+    background: var(--accent);
+    color: white;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 2px;
+  }
 
-    header h1 em {
-      font-style: italic;
-      color: var(--sage-light);
-    }
+  /* Hero */
+  .hero {
+    max-width: 800px;
+    margin: 64px auto 48px;
+    padding: 0 40px;
+  }
 
-    header p {
-      color: rgba(253,250,245,0.75);
-      font-size: 15px;
-      line-height: 1.7;
-      max-width: 560px;
-    }
+  .hero-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
 
-    /* ─── META ROW ─── */
-    .meta-row {
-      background: var(--white);
-      border-bottom: 1px solid rgba(122,158,126,0.2);
-    }
-    .meta-inner {
-      max-width: 820px;
-      margin: 0 auto;
-      padding: 16px 40px;
-      display: flex;
-      gap: 32px;
-      flex-wrap: wrap;
-    }
-    .meta-item {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 13px;
-      color: var(--warm-gray);
-    }
-    .meta-dot {
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      background: var(--sage);
-      flex-shrink: 0;
-    }
-    .meta-item strong {
-      color: var(--soil);
-      font-weight: 500;
-    }
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(28px, 4vw, 42px);
+    line-height: 1.2;
+    color: var(--ink);
+    margin-bottom: 12px;
+  }
 
-    /* ─── MAIN ─── */
-    main {
-      max-width: 820px;
-      margin: 0 auto;
-      padding: 50px 40px 80px;
-    }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
 
-    /* ─── SOURCE TEXT ─── */
-    .source-section {
-      margin-bottom: 44px;
-    }
+  .hero-sub {
+    color: var(--muted);
+    font-size: 14px;
+    margin-bottom: 28px;
+    max-width: 520px;
+  }
 
-    .section-label {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 16px;
-    }
-    .label-num {
-      width: 28px; height: 28px;
-      border-radius: 50%;
-      background: var(--sage-dark);
-      color: var(--white);
-      font-size: 12px;
-      font-weight: 500;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-    .label-text {
-      font-size: 11px;
-      font-weight: 500;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--warm-gray);
-    }
+  .meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
 
-    .text-card {
-      background: var(--white);
-      border-radius: 12px;
-      padding: 28px 32px;
-      border: 1px solid rgba(122,158,126,0.15);
-      line-height: 1.85;
-      font-size: 15px;
-    }
+  .tag {
+    background: var(--tag-bg);
+    color: var(--ink);
+    font-size: 12px;
+    padding: 4px 12px;
+    border-radius: 20px;
+  }
 
-    .text-card.source {
-      border-left: 3px solid var(--sage);
-    }
+  .tag strong {
+    color: var(--muted);
+    font-weight: 400;
+    margin-right: 4px;
+  }
 
-    .text-card.mt-output {
-      border-left: 3px solid #D4A87A;
-      background: #FEFAF4;
-    }
+  /* Divider */
+  .section-divider {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
 
-    /* ─── COMPARISON ─── */
-    .comparison-block {
-      margin-bottom: 44px;
-    }
+  .step-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+    padding-top: 40px;
+    border-top: 1px solid var(--border);
+  }
 
-    .comparison-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0;
-      border-radius: 12px;
-      overflow: hidden;
-      border: 1px solid rgba(122,158,126,0.2);
-    }
+  .step-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    margin-bottom: 20px;
+  }
 
-    @media (max-width: 640px) {
-      .comparison-grid { grid-template-columns: 1fr; }
-    }
+  /* Source text block */
+  .source-block {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--ink);
+    border-radius: 4px;
+    padding: 24px 28px;
+    font-size: 14px;
+    line-height: 1.8;
+    color: var(--ink);
+    margin-bottom: 32px;
+  }
 
-    .col-before {
-      background: #FEF6EE;
-      padding: 24px 26px;
-      border-right: 1px solid rgba(122,158,126,0.15);
-    }
-    .col-after {
-      background: #F0F7F1;
-      padding: 24px 26px;
-    }
+  /* Comparison */
+  .comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
 
-    .col-header {
-      font-size: 11px;
-      font-weight: 500;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      margin-bottom: 14px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .col-before .col-header { color: #B07040; }
-    .col-after .col-header { color: var(--sage-dark); }
+  .compare-card {
+    border-radius: 6px;
+    padding: 24px;
+    font-size: 14px;
+    line-height: 1.9;
+  }
 
-    .col-icon {
-      font-size: 14px;
-    }
+  .compare-card.before {
+    background: var(--warn-light);
+    border: 1px solid #e8c4b0;
+  }
 
-    .col-before p, .col-after p {
-      font-size: 14.5px;
-      line-height: 1.9;
-      color: var(--soil);
-    }
+  .compare-card.after {
+    background: var(--accent-light);
+    border: 1px solid #b8d4c0;
+  }
 
-    .mt-issues {
-      margin-top: 12px;
-      padding-top: 12px;
-      border-top: 1px dashed rgba(176,112,64,0.25);
-    }
-    .issue-tag {
-      display: inline-block;
-      background: rgba(196,118,58,0.12);
-      color: var(--accent);
-      font-size: 11px;
-      padding: 2px 9px;
-      border-radius: 4px;
-      margin: 2px 2px 2px 0;
-      font-weight: 500;
-    }
+  .compare-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
 
-    /* ─── EDIT NOTES ─── */
-    .edit-notes {
-      margin-bottom: 44px;
-    }
+  .compare-header.before { color: var(--warn); }
+  .compare-header.after { color: var(--accent); }
 
-    .notes-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
+  .compare-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
 
-    .note-item {
-      background: var(--white);
-      border-radius: 10px;
-      padding: 18px 22px;
-      border: 1px solid rgba(122,158,126,0.15);
-      display: grid;
-      grid-template-columns: auto 1fr;
-      gap: 16px;
-      align-items: start;
-    }
+  .before .compare-dot { background: var(--warn); }
+  .after .compare-dot { background: var(--accent); }
 
-    .note-num {
-      width: 24px; height: 24px;
-      border-radius: 6px;
-      background: var(--sage-light);
-      color: var(--sage-dark);
-      font-size: 12px;
-      font-weight: 500;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      margin-top: 1px;
-    }
+  .japanese-text {
+    font-size: 14px;
+    color: var(--ink);
+  }
 
-    .note-content {}
+  .issue-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 14px;
+  }
 
-    .note-before {
-      font-family: 'DM Serif Display', serif;
-      font-style: italic;
-      color: var(--accent);
-      font-size: 14px;
-      margin-bottom: 4px;
-    }
+  .issue-tag {
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 2px;
+    background: rgba(122,58,30,0.1);
+    color: var(--warn);
+    font-weight: 500;
+  }
 
-    .note-arrow {
-      color: var(--warm-gray);
-      margin: 0 6px;
-      font-size: 12px;
-    }
+  /* Edit notes */
+  .notes-grid {
+    display: grid;
+    gap: 12px;
+    margin-bottom: 40px;
+  }
 
-    .note-after {
-      font-family: 'DM Serif Display', serif;
-      font-style: italic;
-      color: var(--sage-dark);
-      font-size: 14px;
-      margin-bottom: 6px;
-    }
+  .note-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 20px 24px;
+    display: grid;
+    grid-template-columns: 32px 1fr;
+    gap: 16px;
+    align-items: start;
+  }
 
-    .note-reason {
-      font-size: 13px;
-      color: var(--warm-gray);
-      line-height: 1.65;
-    }
+  .note-letter {
+    width: 32px;
+    height: 32px;
+    background: var(--accent);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 500;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
 
-    /* ─── SKILLS USED ─── */
-    .skills-section {
-      background: var(--sage-dark);
-      border-radius: 14px;
-      padding: 32px 36px;
-      color: var(--white);
-    }
+  .note-content {}
 
-    .skills-section h3 {
-      font-family: 'DM Serif Display', serif;
-      font-size: 20px;
-      margin-bottom: 20px;
-      color: var(--sage-light);
-    }
+  .note-change {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
 
-    .skills-wrap {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
+  .before-text {
+    color: var(--warn);
+    background: var(--warn-light);
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-family: monospace;
+    font-size: 12px;
+  }
 
-    .skill-chip {
-      background: rgba(255,255,255,0.1);
-      border: 1px solid rgba(255,255,255,0.15);
-      color: var(--white);
-      font-size: 13px;
-      padding: 7px 16px;
-      border-radius: 20px;
-    }
+  .after-text {
+    color: var(--accent);
+    background: var(--accent-light);
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-family: monospace;
+    font-size: 12px;
+  }
 
-    /* ─── FOOTER ─── */
-    footer {
-      text-align: center;
-      padding: 30px 20px;
-      font-size: 12px;
-      color: var(--warm-gray);
-    }
+  .arrow { color: var(--muted); font-size: 14px; }
 
-    @media (max-width: 600px) {
-      header, main { padding-left: 20px; padding-right: 20px; }
-      .meta-inner { padding-left: 20px; padding-right: 20px; }
-      .text-card { padding: 20px; }
-    }
-  </style>
+  .note-reason {
+    font-size: 13.5px;
+    color: var(--ink);
+    line-height: 1.7;
+  }
+
+  /* Skills section */
+  .skills-section {
+    background: var(--ink);
+    color: white;
+    max-width: 800px;
+    margin: 0 auto 64px;
+    border-radius: 8px;
+    padding: 36px 40px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+  }
+
+  .skills-section h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 18px;
+    grid-column: 1 / -1;
+    margin-bottom: 6px;
+    color: #e8e4de;
+  }
+
+  .skill-pill {
+    font-size: 12px;
+    padding: 7px 14px;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 3px;
+    color: rgba(255,255,255,0.8);
+    text-align: center;
+  }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    font-size: 12px;
+    color: var(--muted);
+    padding: 32px;
+    border-top: 1px solid var(--border);
+  }
+
+  footer a { color: var(--accent); text-decoration: none; }
+
+  @media (max-width: 600px) {
+    .comparison { grid-template-columns: 1fr; }
+    .skills-section { grid-template-columns: 1fr 1fr; padding: 28px 24px; }
+    header { padding: 16px 20px; }
+    .hero, .section-divider { padding: 0 20px; }
+    .hero { margin-top: 40px; }
+    .note-card { grid-template-columns: 28px 1fr; gap: 12px; }
+  }
+</style>
 </head>
 <body>
 
-  <header>
-    <div class="header-inner">
-      <span class="badge">Portfolio Sample · MTPE</span>
-      <h1>Machine Translation<br>Post-Editing<br><em>Vegan Social Media Content</em></h1>
-      <p>SNS向けヴィーガンコンテンツの機械翻訳後編集サンプル。自然な日本語表現・ターゲット読者への配慮・SNS文体への最適化を実演します。</p>
-    </div>
-  </header>
+<header>
+  <div class="breadcrumb">
+    <a href="#">Portfolio</a>
+    <span>›</span>
+    MTPE Sample
+  </div>
+  <span class="badge">MTPE</span>
+</header>
 
+<div class="hero">
+  <p class="hero-label">Portfolio Sample · Machine Translation Post-Editing</p>
+  <h1>EN → JA Localization<br>for <em>Social Media Content</em></h1>
+  <p class="hero-sub">Demonstrating natural Japanese expression, audience awareness, and SNS-native tone optimization through machine translation post-editing.</p>
   <div class="meta-row">
-    <div class="meta-inner">
-      <div class="meta-item"><div class="meta-dot"></div><strong>言語ペア:</strong>英語 → 日本語</div>
-      <div class="meta-item"><div class="meta-dot"></div><strong>コンテンツ種別:</strong>Instagram / TikTok キャプション</div>
-      <div class="meta-item"><div class="meta-dot"></div><strong>MT エンジン:</strong>DeepL（編集前）</div>
-      <div class="meta-item"><div class="meta-dot"></div><strong>分野:</strong>ヴィーガン / ウェルネス</div>
+    <span class="tag"><strong>Language pair</strong> English → Japanese</span>
+    <span class="tag"><strong>Content type</strong> Instagram / TikTok caption</span>
+    <span class="tag"><strong>MT engine</strong> DeepL (pre-edit)</span>
+    <span class="tag"><strong>Domain</strong> Vegan / Wellness</span>
+  </div>
+</div>
+
+<div class="section-divider">
+
+  <!-- Step 1 -->
+  <p class="step-label">Step 1 · Source Text</p>
+  <p class="step-title">Original English</p>
+  <div class="source-block">
+    Eating plant-based doesn't mean giving up flavor. These 5 vegan recipes are so satisfying, you won't even miss the meat. Perfect for meal prep or a quick weeknight dinner, each dish is packed with protein and comes together in under 30 minutes. Save this post and try one tonight! 🌿
+  </div>
+
+  <!-- Step 2 -->
+  <p class="step-label">Step 2 · Before & After</p>
+  <p class="step-title">MT Output vs. Post-Edited Version</p>
+  <div class="comparison">
+    <div class="compare-card before">
+      <div class="compare-header before">
+        <span class="compare-dot"></span>
+        Raw MT Output (DeepL)
+      </div>
+      <p class="japanese-text">植物性食品を食べることは、風味を諦めることを意味しません。これらの5つのビーガンレシピはとても満足のいくもので、肉を恋しく思うことさえないでしょう。食事の準備や平日の夜の素早い夕食に最適で、各料理はタンパク質が豊富で、30分以内に完成します。この投稿を保存して、今夜試してみてください！🌿</p>
+      <div class="issue-tags">
+        <span class="issue-tag">Over-literal</span>
+        <span class="issue-tag">Written register</span>
+        <span class="issue-tag">Wordy</span>
+        <span class="issue-tag">Weak CTA</span>
+      </div>
+    </div>
+    <div class="compare-card after">
+      <div class="compare-header after">
+        <span class="compare-dot"></span>
+        Post-Edited Version
+      </div>
+      <p class="japanese-text">ヴィーガン食でも、おいしさは一切妥協なし🌿
+
+この5つのレシピなら、肉がなくても大満足！ミールプレップにも平日のさくっと夜ごはんにも◎。タンパク質たっぷりで、どれも30分以内に完成します。
+
+保存して、今夜1品つくってみて🌱</p>
     </div>
   </div>
 
-  <main>
+  <!-- Step 3 -->
+  <p class="step-label">Step 3 · Editorial Notes</p>
+  <p class="step-title">Why Each Change Was Made</p>
 
-    <!-- 1. Source -->
-    <div class="source-section">
-      <div class="section-label">
-        <div class="label-num">1</div>
-        <span class="label-text">英語原文（Source Text）</span>
-      </div>
-      <div class="text-card source">
-        Eating plant-based doesn't mean giving up flavor. These 5 vegan recipes are so satisfying, you won't even miss the meat. Perfect for meal prep or a quick weeknight dinner, each dish is packed with protein and comes together in under 30 minutes. Save this post and try one tonight! 🌿
+  <div class="notes-grid">
+    <div class="note-card">
+      <div class="note-letter">A</div>
+      <div class="note-content">
+        <div class="note-change">
+          <span class="before-text">植物性食品を食べることは、風味を諦めることを意味しません</span>
+          <span class="arrow">→</span>
+          <span class="after-text">ヴィーガン食でも、おいしさは一切妥協なし</span>
+        </div>
+        <p class="note-reason">The MT output reads like formal prose. On Instagram and TikTok, the opening line needs to hook the reader immediately. The revised version is punchy and direct. <em>おいしさ</em> ("deliciousness") is also more natural in Japanese SNS contexts than <em>風味</em> ("flavor"), which sounds clinical.</p>
       </div>
     </div>
 
-    <!-- 2. MT Raw Output -->
-    <div class="source-section">
-      <div class="section-label">
-        <div class="label-num">2</div>
-        <span class="label-text">機械翻訳出力（編集前・DeepL Raw Output）</span>
-      </div>
-      <div class="text-card mt-output">
-        <p>植物性食品を食べることは、風味を諦めることを意味しません。これらの5つのビーガンレシピはとても満足のいくもので、肉を恋しく思うことさえないでしょう。食事の準備や平日の夜の素早い夕食に最適で、各料理はタンパク質が豊富で、30分以内に完成します。この投稿を保存して、今夜試してみてください！🌿</p>
-        <div class="mt-issues">
-          <span class="issue-tag">直訳・不自然</span>
-          <span class="issue-tag">SNS文体と乖離</span>
-          <span class="issue-tag">冗長表現あり</span>
-          <span class="issue-tag">読者への呼びかけ不足</span>
+    <div class="note-card">
+      <div class="note-letter">B</div>
+      <div class="note-content">
+        <div class="note-change">
+          <span class="before-text">とても満足のいくもので、肉を恋しく思うことさえないでしょう</span>
+          <span class="arrow">→</span>
+          <span class="after-text">肉がなくても大満足！</span>
         </div>
+        <p class="note-reason">The phrase <em>〜もので</em> and <em>〜ないでしょう</em> are grammatically correct but register as written language — not how people talk on social media. Japanese SNS copy relies on short sentences, exclamation marks, and noun-ending structures (<em>体言止め</em>). <em>大満足！</em> delivers the same meaning in four characters.</p>
       </div>
     </div>
 
-    <!-- 3. Before / After Comparison -->
-    <div class="comparison-block">
-      <div class="section-label">
-        <div class="label-num">3</div>
-        <span class="label-text">編集前 / 編集後 比較</span>
-      </div>
-      <div class="comparison-grid">
-        <div class="col-before">
-          <div class="col-header"><span class="col-icon">⚠️</span> 編集前（MT 出力）</div>
-          <p>植物性食品を食べることは、風味を諦めることを意味しません。これらの5つのビーガンレシピはとても満足のいくもので、肉を恋しく思うことさえないでしょう。食事の準備や平日の夜の素早い夕食に最適で、各料理はタンパク質が豊富で、30分以内に完成します。この投稿を保存して、今夜試してみてください！🌿</p>
+    <div class="note-card">
+      <div class="note-letter">C</div>
+      <div class="note-content">
+        <div class="note-change">
+          <span class="before-text">食事の準備や平日の夜の素早い夕食に最適</span>
+          <span class="arrow">→</span>
+          <span class="after-text">ミールプレップにも平日のさくっと夜ごはんにも◎</span>
         </div>
-        <div class="col-after">
-          <div class="col-header"><span class="col-icon">✅</span> 編集後（MTPE 完成版）</div>
-          <p>ヴィーガン食でも、おいしさは一切妥協なし🌿<br><br>この5つのレシピなら、肉がなくても大満足！ミールプレップにも平日のさくっと夜ごはんにも◎。タンパク質たっぷりで、どれも30分以内に完成します。<br><br>保存して、今夜1品つくってみて🌱</p>
-        </div>
+        <p class="note-reason">In the vegan and wellness community on Japanese social media, "meal prep" is widely used as a loanword (<em>ミールプレップ</em>). Using the established term is more natural than translating it literally. <em>さくっと</em> (quickly, easily) and the <em>◎</em> symbol are both common stylistic conventions in Japanese lifestyle content.</p>
       </div>
     </div>
 
-    <!-- 4. Edit Notes -->
-    <div class="edit-notes">
-      <div class="section-label">
-        <div class="label-num">4</div>
-        <span class="label-text">編集コメント（編集者注）</span>
-      </div>
-      <div class="notes-grid">
-
-        <div class="note-item">
-          <div class="note-num">A</div>
-          <div class="note-content">
-            <div class="note-before">「植物性食品を食べることは、風味を諦めることを意味しません」</div>
-            <div class="note-after">→「ヴィーガン食でも、おいしさは一切妥協なし」</div>
-            <div class="note-reason">原文は直訳で文語的な印象。Instagram / TikTok では最初の一文で読者を引きつける必要があるため、端的でインパクトのある表現に変更。「風味」より「おいしさ」のほうが日本語SNSユーザーになじみやすい。</div>
-          </div>
+    <div class="note-card">
+      <div class="note-letter">D</div>
+      <div class="note-content">
+        <div class="note-change">
+          <span class="before-text">この投稿を保存して、今夜試してみてください！</span>
+          <span class="arrow">→</span>
+          <span class="after-text">保存して、今夜1品つくってみて🌱</span>
         </div>
-
-        <div class="note-item">
-          <div class="note-num">B</div>
-          <div class="note-content">
-            <div class="note-before">「とても満足のいくもので、肉を恋しく思うことさえないでしょう」</div>
-            <div class="note-after">→「肉がなくても大満足！」</div>
-            <div class="note-reason">「〜もので」「〜ないでしょう」は冗長かつ書き言葉的。SNS文体では体言止めや感嘆符を使って短くまとめるのが基本。「大満足！」で同じ意味を簡潔に伝える。</div>
-          </div>
-        </div>
-
-        <div class="note-item">
-          <div class="note-num">C</div>
-          <div class="note-content">
-            <div class="note-before">「食事の準備や平日の夜の素早い夕食に最適」</div>
-            <div class="note-after">→「ミールプレップにも平日のさくっと夜ごはんにも◎」</div>
-            <div class="note-reason">「meal prep」はヴィーガン・ウェルネス系SNSでは「ミールプレップ」のカタカナ表記が定着しており、ターゲット読者に自然に届く。「さくっと」などの口語表現でSNSのトーンに統一。「◎」は日本語SNSで定番の視覚的アクセント。</div>
-          </div>
-        </div>
-
-        <div class="note-item">
-          <div class="note-num">D</div>
-          <div class="note-content">
-            <div class="note-before">「この投稿を保存して、今夜試してみてください！」</div>
-            <div class="note-after">→「保存して、今夜1品つくってみて🌱」</div>
-            <div class="note-reason">「〜してください」は丁寧だがSNSでは命令口調に聞こえる場合がある。「〜してみて」のほうがフレンドリーで親近感が出る。数字「1品」を入れることで具体性と実行しやすさを演出。絵文字は文末に自然に配置しターゲット読者層に合わせた。</div>
-          </div>
-        </div>
-
+        <p class="note-reason">The polite imperative <em>〜してください</em> can feel stiff or demanding in casual SNS contexts. The informal <em>〜してみて</em> is friendlier and more conversational. Specifying <em>1品</em> ("one dish") makes the action concrete and achievable, which strengthens the call-to-action. The leaf emoji is kept at the end to match the visual style of the target audience.</p>
       </div>
     </div>
+  </div>
 
-    <!-- 5. Skills Used -->
-    <div class="skills-section">
-      <h3>このサンプルで示したスキル</h3>
-      <div class="skills-wrap">
-        <span class="skill-chip">機械翻訳後編集（MTPE）</span>
-        <span class="skill-chip">SNS文体への最適化</span>
-        <span class="skill-chip">ターゲット読者分析</span>
-        <span class="skill-chip">文化的ローカライズ</span>
-        <span class="skill-chip">日本語コピーライティング</span>
-        <span class="skill-chip">ヴィーガン / ウェルネス分野</span>
-        <span class="skill-chip">英日翻訳品質評価</span>
-      </div>
-    </div>
+</div>
 
-  </main>
+<!-- Skills -->
+<div class="skills-section" style="margin-left: 40px; margin-right: 40px; max-width: calc(800px); margin: 0 auto 64px;">
+  <h3>Skills Demonstrated</h3>
+  <span class="skill-pill">Machine Translation Post-Editing</span>
+  <span class="skill-pill">SNS Tone Optimization</span>
+  <span class="skill-pill">Target Audience Analysis</span>
+  <span class="skill-pill">Cultural Localization</span>
+  <span class="skill-pill">Japanese Copywriting</span>
+  <span class="skill-pill">Vegan / Wellness Domain</span>
+  <span class="skill-pill">EN → JA Translation QA</span>
+  <span class="skill-pill">Register & Style Matching</span>
+  <span class="skill-pill">UX-aware Language</span>
+</div>
 
-  <footer>
-    Portfolio sample by a Native Japanese Proofreader & Localizer · erika-jp.github.io/portfolio
-  </footer>
+<footer>
+  Portfolio sample by <a href="https://erika-jp.github.io/portfolio">Erika Hashimoto</a> · Native Japanese Proofreader & Localizer
+</footer>
 
 </body>
 </html>
