@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Historical Research & Translation — Erika Hashimoto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Lora:ital,wght@0,400;0,500;1,400&family=Noto+Serif+JP:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --parchment: #F4EFE4;
+    --parchment-dark: #E8E0CC;
+    --navy: #1C2B4A;
+    --navy-light: #2C3F6A;
+    --gold: #9A7B2F;
+    --gold-light: #C4A84F;
+    --rust: #8B4A2A;
+    --ink: #2A2018;
+    --ink-light: #4A3C2A;
+    --muted: #7A6E5C;
+    --divider: #C8B99A;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background-color: var(--parchment);
+    color: var(--ink);
+    font-family: 'Lora', Georgia, serif;
+    line-height: 1.75;
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  }
+
+  /* ─── HEADER ─── */
+  header {
+    background-color: var(--navy);
+    color: var(--parchment);
+    padding: 56px 48px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 60px,
+      rgba(255,255,255,0.015) 60px,
+      rgba(255,255,255,0.015) 61px
+    );
+    pointer-events: none;
+  }
+
+  .header-label {
+    font-family: 'Lora', serif;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    margin-bottom: 16px;
+  }
+
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 4vw, 48px);
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--parchment);
+    margin-bottom: 12px;
+  }
+
+  header h1 em {
+    font-style: italic;
+    color: var(--gold-light);
+  }
+
+  .header-sub {
+    font-size: 15px;
+    color: #A8B4C8;
+    max-width: 560px;
+    margin-top: 8px;
+  }
+
+  .header-meta {
+    margin-top: 28px;
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+
+  .meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .meta-label {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+  }
+
+  .meta-value {
+    font-size: 14px;
+    color: var(--parchment-dark);
+  }
+
+  .sample-banner {
+    background: var(--gold);
+    color: var(--navy);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    display: inline-block;
+    margin-top: 24px;
+    font-family: 'Lora', serif;
+  }
+
+  /* ─── MAIN ─── */
+  main {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 32px 80px;
+  }
+
+  /* ─── SECTION ─── */
+  .section {
+    margin-top: 64px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.6s ease forwards;
+  }
+
+  .section:nth-child(1) { animation-delay: 0.1s; }
+  .section:nth-child(2) { animation-delay: 0.25s; }
+  .section:nth-child(3) { animation-delay: 0.4s; }
+  .section:nth-child(4) { animation-delay: 0.55s; }
+
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 20px;
+    margin-bottom: 28px;
+    padding-bottom: 16px;
+    border-bottom: 1.5px solid var(--divider);
+  }
+
+  .section-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 13px;
+    color: var(--gold);
+    letter-spacing: 0.15em;
+    flex-shrink: 0;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(20px, 2.5vw, 26px);
+    font-weight: 600;
+    color: var(--navy);
+    line-height: 1.3;
+  }
+
+  .section-tag {
+    margin-left: auto;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: var(--parchment-dark);
+    padding: 3px 10px;
+    border: 1px solid var(--divider);
+    flex-shrink: 0;
+  }
+
+  /* ─── RESEARCH BRIEF ─── */
+  .brief-card {
+    background: white;
+    border: 1px solid var(--divider);
+    border-top: 3px solid var(--navy);
+    padding: 36px 40px;
+    box-shadow: 3px 4px 0 var(--parchment-dark);
+  }
+
+  .brief-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    color: var(--navy);
+    margin-bottom: 6px;
+  }
+
+  .brief-subtitle {
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    margin-bottom: 24px;
+  }
+
+  .brief-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 28px;
+  }
+
+  @media (max-width: 600px) {
+    .brief-grid { grid-template-columns: 1fr; }
+  }
+
+  .brief-block h4 {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+    font-family: 'Lora', serif;
+    font-weight: 500;
+  }
+
+  .brief-block p, .brief-block li {
+    font-size: 14px;
+    color: var(--ink-light);
+    line-height: 1.7;
+  }
+
+  .brief-block ul {
+    padding-left: 16px;
+  }
+
+  .brief-block li { margin-bottom: 4px; }
+
+  .brief-divider {
+    border: none;
+    border-top: 1px dashed var(--divider);
+    margin: 24px 0;
+  }
+
+  .brief-finding {
+    background: var(--parchment);
+    border-left: 3px solid var(--gold);
+    padding: 16px 20px;
+    margin-top: 16px;
+    font-size: 14px;
+    color: var(--ink-light);
+  }
+
+  .brief-finding strong {
+    display: block;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 6px;
+  }
+
+  /* ─── EMAIL SAMPLE ─── */
+  .email-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border: 1px solid var(--divider);
+    box-shadow: 3px 4px 0 var(--parchment-dark);
+  }
+
+  @media (max-width: 640px) {
+    .email-wrapper { grid-template-columns: 1fr; }
+  }
+
+  .email-pane {
+    padding: 28px 32px;
+  }
+
+  .email-pane.jp {
+    background: white;
+    border-right: 1px solid var(--divider);
+  }
+
+  .email-pane.en {
+    background: var(--parchment);
+  }
+
+  .email-lang {
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .email-lang::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--divider);
+  }
+
+  .email-meta {
+    margin-bottom: 20px;
+  }
+
+  .email-meta p {
+    font-size: 13px;
+    color: var(--ink-light);
+    margin-bottom: 4px;
+  }
+
+  .email-meta strong {
+    color: var(--navy);
+    font-weight: 500;
+  }
+
+  .email-body {
+    font-size: 14px;
+    color: var(--ink);
+    line-height: 1.8;
+    white-space: pre-wrap;
+    font-family: 'Lora', serif;
+  }
+
+  .email-body.jp-text {
+    font-family: 'Noto Serif JP', 'Lora', serif;
+  }
+
+  /* ─── TRANSLATION ─── */
+  .translation-wrapper {
+    border: 1px solid var(--divider);
+    box-shadow: 3px 4px 0 var(--parchment-dark);
+    overflow: hidden;
+  }
+
+  .translation-header {
+    background: var(--navy);
+    color: var(--parchment);
+    padding: 14px 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    letter-spacing: 0.15em;
+  }
+
+  .translation-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @media (max-width: 640px) {
+    .translation-body { grid-template-columns: 1fr; }
+  }
+
+  .translation-col {
+    padding: 28px 32px;
+  }
+
+  .translation-col.source {
+    background: white;
+    border-right: 1px solid var(--divider);
+  }
+
+  .translation-col.target {
+    background: var(--parchment);
+  }
+
+  .col-label {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+
+  .translation-col p {
+    font-size: 14px;
+    line-height: 1.9;
+    color: var(--ink);
+    margin-bottom: 16px;
+  }
+
+  .translation-col.source p {
+    font-family: 'Noto Serif JP', serif;
+  }
+
+  .translation-note {
+    font-size: 12px;
+    color: var(--muted);
+    font-style: italic;
+    border-top: 1px dashed var(--divider);
+    padding-top: 12px;
+    margin-top: 4px;
+  }
+
+  /* ─── CONTACT LIST ─── */
+  .contact-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+    box-shadow: 3px 4px 0 var(--parchment-dark);
+  }
+
+  .contact-table thead {
+    background: var(--navy);
+    color: var(--parchment);
+  }
+
+  .contact-table th {
+    padding: 12px 18px;
+    text-align: left;
+    font-weight: 500;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-family: 'Lora', serif;
+  }
+
+  .contact-table tbody tr {
+    background: white;
+    border-bottom: 1px solid var(--divider);
+    transition: background 0.15s;
+  }
+
+  .contact-table tbody tr:nth-child(even) {
+    background: var(--parchment);
+  }
+
+  .contact-table tbody tr:hover {
+    background: var(--parchment-dark);
+  }
+
+  .contact-table td {
+    padding: 12px 18px;
+    vertical-align: top;
+    color: var(--ink-light);
+  }
+
+  .contact-table td:first-child {
+    font-weight: 500;
+    color: var(--navy);
+    font-size: 13px;
+  }
+
+  .tag-pill {
+    display: inline-block;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    padding: 2px 8px;
+    border-radius: 2px;
+    text-transform: uppercase;
+  }
+
+  .tag-archive { background: #E8EDF5; color: var(--navy); }
+  .tag-museum  { background: #F0EBE0; color: var(--rust); }
+  .tag-gov     { background: #EAF0EA; color: #2A5A2A; }
+  .tag-library { background: #F5F0E8; color: var(--gold); border: 1px solid var(--divider); }
+
+  .jp-name {
+    display: block;
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 2px;
+    font-family: 'Noto Serif JP', serif;
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    text-align: center;
+    padding: 40px 32px;
+    border-top: 1px solid var(--divider);
+    margin-top: 64px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  footer a {
+    color: var(--navy);
+    text-decoration: none;
+    border-bottom: 1px solid var(--divider);
+  }
+
+  footer a:hover { border-color: var(--gold); color: var(--gold); }
+
+  .footer-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    color: var(--navy);
+    margin-bottom: 8px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-label">Portfolio Sample — Historical Research & Translation</div>
+  <h1>Japanese Research, <em>Institutional Outreach</em><br>& Historical Translation</h1>
+  <p class="header-sub">Demonstrating methodology for archival research, bilingual communication with Japanese institutions, and document translation in historical contexts.</p>
+  <div class="header-meta">
+    <div class="meta-item">
+      <span class="meta-label">Specialist</span>
+      <span class="meta-value">Erika Hashimoto</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Base</span>
+      <span class="meta-value">Osaka, Japan</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Focus Area</span>
+      <span class="meta-value">Seto Inland Sea / Hiroshima Region</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Languages</span>
+      <span class="meta-value">Japanese · English</span>
+    </div>
+  </div>
+  <div class="sample-banner">⚑ All content below is sample work created for demonstration purposes</div>
+</header>
+
+<main>
+
+  <!-- ── SECTION 1: RESEARCH BRIEF ── -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <h2 class="section-title">Research Brief — Kurahashi Island Shipbuilding Heritage</h2>
+      <span class="section-tag">Sample</span>
+    </div>
+
+    <div class="brief-card">
+      <div class="brief-title">倉橋島 Kurahashi Island: Preliminary Research Summary</div>
+      <div class="brief-subtitle">Prepared for genealogical and historical book project · Focus: Shipbuilding families, Hiroshima Prefecture</div>
+
+      <div class="brief-grid">
+        <div class="brief-block">
+          <h4>Administrative Context</h4>
+          <p>Kurahashi Island (倉橋島) is located south of Kure City in Hiroshima Prefecture. Formerly the town of Kurahashi (倉橋町, Aki District), it was incorporated into Kure City in March 2005. Any historical records prior to 2005 may be filed under Kurahashi-chō or Aki-gun administrative records.</p>
+        </div>
+        <div class="brief-block">
+          <h4>Shipbuilding Background</h4>
+          <p>The island has a long tradition of wooden shipbuilding (木造船建造) dating back several centuries. Its proximity to Kure — home to the Imperial Japanese Navy's largest naval arsenal (呉海軍工廠) — made the surrounding area a center of maritime industry through the Meiji, Taishō, and Shōwa periods.</p>
+        </div>
+        <div class="brief-block">
+          <h4>Key Record Types to Request</h4>
+          <ul>
+            <li>戸籍謄本 / 除籍謄本 (family register excerpts)</li>
+            <li>住民票の写し (residence records)</li>
+            <li>土地台帳 (land registry records)</li>
+            <li>地域史・町史 (local history publications)</li>
+            <li>職業別名簿 (occupational directories)</li>
+          </ul>
+        </div>
+        <div class="brief-block">
+          <h4>Recommended Initial Contacts</h4>
+          <ul>
+            <li>呉市役所 倉橋支所 (Kurahashi branch of Kure City Hall)</li>
+            <li>呉市立中央図書館 (Kure City Central Library)</li>
+            <li>呉市海事歴史科学館 (Yamato Museum)</li>
+            <li>広島県立図書館 (Hiroshima Prefectural Library)</li>
+            <li>国立国会図書館 デジタルコレクション</li>
+          </ul>
+        </div>
+      </div>
+
+      <hr class="brief-divider">
+
+      <div class="brief-finding">
+        <strong>Research Note</strong>
+        Administrative records for Kurahashi Island prior to the 2005 municipal merger are held under former Kurahashi-chō (倉橋町) records. Requests to Kure City Hall's Kurahashi branch (倉橋支所) should specify the pre-merger period to ensure correct routing. The National Diet Library Digital Collections (国立国会図書館デジタルコレクション) contains digitized regional histories and period directories accessible remotely.
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ── SECTION 2: INQUIRY EMAIL ── -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <h2 class="section-title">Institutional Inquiry Email — Japanese + English</h2>
+      <span class="section-tag">Sample</span>
+    </div>
+
+    <div class="email-wrapper">
+      <div class="email-pane jp">
+        <div class="email-lang">日本語原文</div>
+        <div class="email-meta">
+          <p><strong>宛先：</strong>呉市立中央図書館 地域資料担当 御中</p>
+          <p><strong>件名：</strong>倉橋島の造船業に関する歴史資料のご照会</p>
+        </div>
+        <div class="email-body jp-text">拝啓
+
+突然のご連絡、失礼いたします。私はフリーランスの調査補助者として、米国在住の日系アメリカ人研究者の書籍プロジェクトをサポートしております。
+
+本プロジェクトでは、明治・大正・昭和期における倉橋島（現・呉市倉橋町）の造船業の歴史、および当地で従事されていた職人・船大工の方々に関する記録を調査しております。
+
+つきましては、以下についてご案内いただけますでしょうか。
+
+・倉橋島の造船業・地域産業史に関する郷土資料・文献の所蔵状況
+・旧倉橋町時代の職業別名簿・地域誌の有無
+・資料の閲覧方法、および遠方からの複写申請の可否
+
+ご多忙のところ恐縮ですが、ご確認のうえご返信いただけますと幸いです。どうぞよろしくお願い申し上げます。
+
+敬具
+
+橋本恵里香
+（調査補助者・大阪府在住）</div>
+      </div>
+
+      <div class="email-pane en">
+        <div class="email-lang">English Translation</div>
+        <div class="email-meta">
+          <p><strong>To:</strong> Local Materials Section, Kure City Central Library</p>
+          <p><strong>Subject:</strong> Inquiry Regarding Historical Materials on Kurahashi Island Shipbuilding</p>
+        </div>
+        <div class="email-body">Dear Library Staff,
+
+I hope this message finds you well. I am writing on behalf of a Japanese-American researcher based in the United States, for whom I am providing research assistance as part of a book project.
+
+The project focuses on the history of the shipbuilding industry on Kurahashi Island (now Kurahashi-chō, Kure City) during the Meiji, Taishō, and Shōwa periods, with particular interest in records relating to craftspeople and ship carpenters who worked in the area.
+
+I would be grateful if you could advise us on the following:
+
+· Holdings of local history materials related to Kurahashi Island's shipbuilding and regional industries
+· Availability of occupational directories or local chronicles from the former Kurahashi-chō period
+· Procedures for accessing materials, and whether remote copy requests are accepted
+
+We understand you are busy and we deeply appreciate your time. We look forward to your kind reply.
+
+Respectfully yours,
+
+Erika Hashimoto
+(Research Assistant, Osaka, Japan)</div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ── SECTION 3: TRANSLATION SAMPLE ── -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <h2 class="section-title">Japanese → English Translation — Historical Text</h2>
+      <span class="section-tag">Sample</span>
+    </div>
+
+    <div class="translation-wrapper">
+      <div class="translation-header">
+        <span>Parallel Text · Source / Translation</span>
+        <span style="color: #A8B4C8; font-size: 11px;">Original sample text created for demonstration · Not extracted from any published work</span>
+      </div>
+      <div class="translation-body">
+        <div class="translation-col source">
+          <div class="col-label">Source — Japanese</div>
+          <p>瀬戸内海は、古来より日本の海上交通の要衝として栄えてきた。数百もの島々が点在するこの内海では、船は単なる移動手段ではなく、人々の生活と産業を支える根幹であった。</p>
+          <p>とりわけ安芸国（現・広島県）の島嶼部においては、豊富な木材資源と熟練した船大工の技術が相まって、独自の造船文化が育まれた。倉橋島をはじめとする島々では、世代を超えて受け継がれた木造船の建造技術が、地域経済の中心を担っていた。</p>
+          <p>明治期以降、近代化の波とともに鉄船の需要が高まるなかでも、伝統的な木造船技術はその価値を失わず、漁船や小型の運搬船として広く用いられ続けた。</p>
+          <div class="translation-note">※ This source text is an original sample composed for this portfolio. It does not reproduce any published or copyrighted material.</div>
+        </div>
+        <div class="translation-col target">
+          <div class="col-label">Translation — English</div>
+          <p>The Seto Inland Sea has long served as a vital artery of maritime trade in Japan. Among its hundreds of scattered islands, boats were far more than a means of transport — they were the foundation upon which people's livelihoods and industries depended.</p>
+          <p>In the island communities of Aki Province (present-day Hiroshima Prefecture) in particular, abundant timber resources combined with the refined skills of local ship carpenters to nurture a distinctive shipbuilding culture. On islands such as Kurahashi, the craft of wooden boat construction — passed down across generations — stood at the heart of the regional economy.</p>
+          <p>Even as the Meiji period brought modernization and growing demand for iron vessels, traditional wooden boatbuilding retained its relevance. Fishing boats and small cargo carriers built by local craftspeople continued to be widely used throughout the era.</p>
+          <div class="translation-note">Translation by Erika Hashimoto. Rendered for natural English readability while preserving the register and cadence of the original.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ── SECTION 4: CONTACT LIST ── -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <h2 class="section-title">Research Contact List — Hiroshima / Kure Region</h2>
+      <span class="section-tag">Sample</span>
+    </div>
+
+    <table class="contact-table">
+      <thead>
+        <tr>
+          <th>Institution</th>
+          <th>Type</th>
+          <th>Research Value</th>
+          <th>Access</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            Kure City Hall — Kurahashi Branch
+            <span class="jp-name">呉市役所 倉橋支所</span>
+          </td>
+          <td><span class="tag-pill tag-gov">Gov</span></td>
+          <td>Family registers (戸籍), residence records, land registry from Kurahashi-chō period</td>
+          <td>In-person request; some records require proof of relation</td>
+        </tr>
+        <tr>
+          <td>
+            Kure City Central Library
+            <span class="jp-name">呉市立中央図書館</span>
+          </td>
+          <td><span class="tag-pill tag-library">Library</span></td>
+          <td>Local history collections, regional directories, Kurahashi-chō chronicles</td>
+          <td>Remote inquiry accepted; photocopy requests available</td>
+        </tr>
+        <tr>
+          <td>
+            Yamato Museum (Kure Maritime Museum)
+            <span class="jp-name">呉市海事歴史科学館</span>
+          </td>
+          <td><span class="tag-pill tag-museum">Museum</span></td>
+          <td>Naval and shipbuilding history of Kure region; industrial heritage archives</td>
+          <td>Public; research inquiries accepted via contact form</td>
+        </tr>
+        <tr>
+          <td>
+            Hiroshima Prefectural Library
+            <span class="jp-name">広島県立図書館</span>
+          </td>
+          <td><span class="tag-pill tag-library">Library</span></td>
+          <td>Prefectural historical records, Aki-gun area documents, digitized local histories</td>
+          <td>Remote digital access; physical visit for restricted materials</td>
+        </tr>
+        <tr>
+          <td>
+            National Diet Library — Digital Collections
+            <span class="jp-name">国立国会図書館 デジタルコレクション</span>
+          </td>
+          <td><span class="tag-pill tag-archive">Archive</span></td>
+          <td>Digitized Meiji–Shōwa period directories, occupational registers, regional newspapers</td>
+          <td>Online access; some items require NDL registration</td>
+        </tr>
+        <tr>
+          <td>
+            Hiroshima Prefectural Archives
+            <span class="jp-name">広島県立文書館</span>
+          </td>
+          <td><span class="tag-pill tag-archive">Archive</span></td>
+          <td>Administrative records, survey documents, and historical maps of Hiroshima Prefecture</td>
+          <td>In-person or written request; advance appointment recommended</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</main>
+
+<footer>
+  <div class="footer-name">Erika Hashimoto</div>
+  <p>Japanese Language Specialist · Osaka, Japan</p>
+  <p style="margin-top: 8px;">
+    <a href="https://erika-jp.github.io/portfolio">erika-jp.github.io/portfolio</a>
+  </p>
+  <p style="margin-top: 16px; font-size: 12px;">All content on this page is original sample work created for portfolio demonstration purposes only.</p>
+</footer>
+
+</body>
+</html>
