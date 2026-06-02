@@ -1,0 +1,1468 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>星の肖像 — 三天星図</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Noto+Serif+JP:wght@200;300;400;600&family=Cinzel+Decorative:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #08061a;
+  --parchment: #f5efe6;
+  --gold: #c9a84c;
+  --gold-light: #e8d5a3;
+  --gold-pale: #f7f0de;
+  --indigo: #1a1535;
+  --violet: #2d1f5e;
+  --rose: #8b3a5a;
+  --sage: #3a6b5a;
+  --silver: #9ba8b5;
+  --accent: #d4af6e;
+  --card-bg: rgba(10,8,28,0.7);
+  --border: rgba(201,168,76,0.18);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--ink);
+  font-family: 'Noto Serif JP', serif;
+  color: var(--parchment);
+  overflow-x: hidden;
+  line-height: 1.7;
+}
+
+/* ══════════════════════════════════
+   PROGRESS BAR
+══════════════════════════════════ */
+#progress-bar {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--violet), var(--gold), var(--rose));
+  z-index: 1000;
+  width: 0%;
+  transition: width 0.1s linear;
+}
+
+/* ══════════════════════════════════
+   FIXED NAV
+══════════════════════════════════ */
+nav {
+  position: fixed;
+  top: 0; right: 0;
+  z-index: 900;
+  padding: 20px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-end;
+}
+.nav-dot {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  opacity: 0.4;
+  transition: opacity 0.3s;
+}
+.nav-dot:hover, .nav-dot.active { opacity: 1; }
+.nav-dot .dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--gold);
+  transition: transform 0.3s;
+}
+.nav-dot.active .dot { transform: scale(1.6); }
+.nav-dot .label {
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--silver);
+  white-space: nowrap;
+}
+@media(max-width:600px){ nav { display: none; } }
+
+/* ══════════════════════════════════
+   STARFIELD
+══════════════════════════════════ */
+#starfield {
+  position: fixed; inset: 0; z-index: 0;
+  background: radial-gradient(ellipse at 30% 20%, #1a1040 0%, #0a0715 40%, #050310 100%);
+  overflow: hidden;
+  pointer-events: none;
+}
+.star {
+  position: absolute;
+  border-radius: 50%;
+  background: white;
+  animation: twinkle var(--d, 4s) ease-in-out infinite alternate;
+}
+@keyframes twinkle {
+  0%{opacity:0.2;} 100%{opacity:var(--max-op, 0.9);}
+}
+.shooting-star {
+  position: absolute;
+  width: 120px; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(201,168,76,0.9), transparent);
+  animation: shoot 6s ease-in-out infinite;
+  opacity: 0;
+}
+@keyframes shoot {
+  0%{opacity:0;transform:translateX(-100px) translateY(0) rotate(-20deg);}
+  10%{opacity:1;}
+  30%{opacity:0;transform:translateX(400px) translateY(80px) rotate(-20deg);}
+  100%{opacity:0;}
+}
+
+/* ══════════════════════════════════
+   SCROLL REVEAL
+══════════════════════════════════ */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.9s ease, transform 0.9s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-delay-1 { transition-delay: 0.15s; }
+.reveal-delay-2 { transition-delay: 0.3s; }
+.reveal-delay-3 { transition-delay: 0.45s; }
+.reveal-delay-4 { transition-delay: 0.6s; }
+
+/* ══════════════════════════════════
+   LAYOUT
+══════════════════════════════════ */
+main {
+  position: relative; z-index: 1;
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 24px 120px;
+}
+
+/* ══════════════════════════════════
+   HERO
+══════════════════════════════════ */
+#hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 80px 0 60px;
+}
+.hero-eyebrow {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 10px;
+  letter-spacing: 5px;
+  color: var(--gold);
+  border: 1px solid rgba(201,168,76,0.35);
+  padding: 7px 22px;
+  margin-bottom: 40px;
+  animation: fadeIn 1.5s ease both;
+}
+@keyframes fadeIn {
+  from{opacity:0;} to{opacity:1;}
+}
+.hero-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(52px, 11vw, 96px);
+  font-weight: 300;
+  letter-spacing: 0.04em;
+  line-height: 1.05;
+  color: var(--parchment);
+  margin-bottom: 16px;
+  animation: heroSlide 1.4s 0.2s ease both;
+}
+.hero-title em {
+  font-style: italic;
+  color: var(--gold-light);
+  display: block;
+}
+@keyframes heroSlide {
+  from{opacity:0;transform:translateY(30px);}
+  to{opacity:1;transform:translateY(0);}
+}
+.hero-sub {
+  font-size: 12px;
+  letter-spacing: 4px;
+  color: var(--silver);
+  margin-bottom: 48px;
+  animation: fadeIn 1.5s 0.6s ease both;
+}
+.hero-divider {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 48px;
+  animation: fadeIn 1.5s 0.8s ease both;
+}
+.hero-divider::before, .hero-divider::after {
+  content: '';
+  width: 80px; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold));
+}
+.hero-divider::after {
+  background: linear-gradient(90deg, var(--gold), transparent);
+}
+.hero-divider span { color: var(--gold); font-size: 16px; }
+
+.source-chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  animation: fadeIn 1.5s 1s ease both;
+}
+.source-chip {
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--silver);
+  padding: 7px 18px;
+  border: 1px solid rgba(155,168,181,0.25);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.source-chip .chip-icon { color: var(--gold); font-size: 13px; }
+
+.scroll-hint {
+  position: absolute;
+  bottom: 36px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  animation: fadeIn 2s 1.5s ease both;
+}
+.scroll-hint span {
+  font-size: 9px;
+  letter-spacing: 4px;
+  color: var(--silver);
+  opacity: 0.5;
+}
+.scroll-arrow {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(180deg, transparent, var(--gold));
+  animation: arrowPulse 2s ease-in-out infinite;
+}
+@keyframes arrowPulse {
+  0%,100%{opacity:0.3;transform:scaleY(0.8);}
+  50%{opacity:1;transform:scaleY(1.2);}
+}
+
+/* ══════════════════════════════════
+   DECLARATION SECTION
+══════════════════════════════════ */
+#declaration {
+  padding: 80px 0;
+}
+.declaration-card {
+  padding: 56px 48px;
+  background: linear-gradient(135deg, rgba(45,31,94,0.4) 0%, rgba(13,10,26,0.7) 100%);
+  border: 1px solid rgba(201,168,76,0.25);
+  text-align: center;
+  position: relative;
+}
+.declaration-card::before {
+  content: '✦';
+  position: absolute;
+  top: 20px; left: 28px;
+  color: var(--gold); opacity: 0.4; font-size: 16px;
+}
+.declaration-card::after {
+  content: '✦';
+  position: absolute;
+  bottom: 20px; right: 28px;
+  color: var(--gold); opacity: 0.4; font-size: 16px;
+}
+.declaration-label {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 9px;
+  letter-spacing: 5px;
+  color: var(--gold);
+  margin-bottom: 28px;
+}
+.declaration-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(20px, 3.5vw, 28px);
+  font-weight: 300;
+  font-style: italic;
+  line-height: 1.9;
+  color: var(--gold-light);
+  letter-spacing: 0.04em;
+  margin-bottom: 24px;
+}
+.declaration-footer {
+  font-size: 10px;
+  letter-spacing: 4px;
+  color: var(--silver);
+  opacity: 0.6;
+}
+
+/* ══════════════════════════════════
+   SECTION COMMON
+══════════════════════════════════ */
+.section {
+  padding: 80px 0;
+  border-top: 1px solid rgba(201,168,76,0.1);
+}
+.section-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 48px;
+}
+.section-number {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 11px;
+  color: rgba(201,168,76,0.4);
+  letter-spacing: 2px;
+  flex-shrink: 0;
+}
+.section-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(201,168,76,0.3), transparent);
+}
+.section-icon-box {
+  width: 48px; height: 48px;
+  border: 1px solid rgba(201,168,76,0.4);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+  background: rgba(201,168,76,0.06);
+  flex-shrink: 0;
+}
+.section-heading {
+  margin-bottom: 40px;
+}
+.section-heading h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(28px, 5vw, 42px);
+  font-weight: 300;
+  color: var(--gold-light);
+  letter-spacing: 0.06em;
+  line-height: 1.2;
+}
+.section-heading .en {
+  font-size: 10px;
+  letter-spacing: 5px;
+  color: var(--silver);
+  opacity: 0.6;
+  margin-top: 6px;
+  display: block;
+}
+.section-lead {
+  font-size: 15px;
+  line-height: 2;
+  color: rgba(245,239,230,0.8);
+  font-weight: 200;
+  margin-bottom: 40px;
+  max-width: 680px;
+}
+
+/* ══════════════════════════════════
+   CARDS
+══════════════════════════════════ */
+.card {
+  padding: 28px 32px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  position: relative;
+  margin-bottom: 16px;
+  backdrop-filter: blur(4px);
+}
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 3px; height: 100%;
+  background: var(--gold);
+  opacity: 0.4;
+}
+.card.accent::before { opacity: 1; }
+.card.rose-accent::before { background: var(--rose); opacity: 0.8; }
+.card.sage-accent::before { background: var(--sage); opacity: 0.8; }
+
+.card-label {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 8px;
+  letter-spacing: 3px;
+  color: var(--gold);
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+.card-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--parchment);
+  margin-bottom: 14px;
+  line-height: 1.3;
+}
+.card-body {
+  font-size: 13.5px;
+  line-height: 2;
+  color: rgba(245,239,230,0.75);
+  font-weight: 200;
+}
+.card-body strong {
+  color: var(--gold-light);
+  font-weight: 400;
+}
+
+/* グリッド */
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.grid-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+}
+.col-span-2 { grid-column: 1 / -1; }
+@media(max-width:640px) {
+  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  .col-span-2 { grid-column: 1; }
+}
+
+/* star tags */
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+.tag {
+  font-size: 9px;
+  padding: 4px 11px;
+  border-radius: 999px;
+  letter-spacing: 1px;
+  font-family: 'Cinzel Decorative', serif;
+}
+.tag-gold { background: rgba(201,168,76,0.12); border: 1px solid rgba(201,168,76,0.35); color: var(--gold); }
+.tag-rose { background: rgba(139,58,90,0.12); border: 1px solid rgba(139,58,90,0.4); color: #c4789a; }
+.tag-sage { background: rgba(58,107,90,0.12); border: 1px solid rgba(58,107,90,0.4); color: #7ab8a0; }
+.tag-silver { background: rgba(155,168,181,0.1); border: 1px solid rgba(155,168,181,0.3); color: var(--silver); }
+
+/* ══════════════════════════════════
+   三天共鳴バー
+══════════════════════════════════ */
+.resonance-bar {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  border: 1px solid var(--border);
+  margin-bottom: 40px;
+}
+.resonance-item {
+  padding: 20px 18px;
+  text-align: center;
+  border-right: 1px solid var(--border);
+  position: relative;
+}
+.resonance-item:last-child { border-right: none; }
+.resonance-item .r-icon {
+  font-size: 22px;
+  display: block;
+  margin-bottom: 8px;
+}
+.resonance-item .r-name {
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--silver);
+  margin-bottom: 6px;
+  display: block;
+}
+.resonance-item .r-value {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 15px;
+  color: var(--gold-light);
+}
+@media(max-width:500px){
+  .resonance-bar { grid-template-columns: 1fr; }
+  .resonance-item { border-right: none; border-bottom: 1px solid var(--border); }
+  .resonance-item:last-child { border-bottom: none; }
+}
+
+/* ══════════════════════════════════
+   長所・短所
+══════════════════════════════════ */
+.virtue-vice {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+@media(max-width:640px){ .virtue-vice { grid-template-columns: 1fr; } }
+
+.vv-block {
+  padding: 32px 28px;
+  border: 1px solid;
+}
+.vv-block.virtue { border-color: rgba(58,107,90,0.4); background: rgba(58,107,90,0.07); }
+.vv-block.vice { border-color: rgba(139,58,90,0.4); background: rgba(139,58,90,0.07); }
+
+.vv-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 28px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid;
+}
+.vv-block.virtue .vv-header { border-color: rgba(58,107,90,0.3); }
+.vv-block.vice .vv-header { border-color: rgba(139,58,90,0.3); }
+
+.vv-header-icon { font-size: 22px; }
+.vv-header-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px;
+  font-weight: 400;
+}
+.vv-block.virtue .vv-header-title { color: #7ab8a0; }
+.vv-block.vice .vv-header-title { color: #c4789a; }
+.vv-header-en {
+  font-size: 8px;
+  letter-spacing: 3px;
+  display: block;
+  margin-top: 2px;
+  opacity: 0.6;
+}
+.vv-block.virtue .vv-header-en { color: #7ab8a0; }
+.vv-block.vice .vv-header-en { color: #c4789a; }
+
+.vv-item {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 22px;
+  align-items: flex-start;
+}
+.vv-item:last-child { margin-bottom: 0; }
+.vv-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px;
+  font-weight: 300;
+  line-height: 1;
+  flex-shrink: 0;
+  margin-top: -4px;
+  opacity: 0.25;
+}
+.vv-block.virtue .vv-num { color: #7ab8a0; }
+.vv-block.vice .vv-num { color: #c4789a; }
+.vv-content {}
+.vv-content strong {
+  display: block;
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--parchment);
+  margin-bottom: 6px;
+  font-family: 'Cormorant Garamond', serif;
+}
+.vv-content p {
+  font-size: 13px;
+  line-height: 1.9;
+  font-weight: 200;
+  color: rgba(245,239,230,0.7);
+}
+.vv-content .aspect-note {
+  display: inline-block;
+  margin-top: 6px;
+  font-size: 10px;
+  color: var(--silver);
+  opacity: 0.7;
+  letter-spacing: 1px;
+}
+
+/* ══════════════════════════════════
+   FORTUNE SECTION
+══════════════════════════════════ */
+.fortune-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+}
+@media(max-width:640px){ .fortune-layout { grid-template-columns: 1fr; } }
+
+.fortune-panel {
+  padding: 36px 30px;
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+  position: relative;
+  overflow: hidden;
+}
+.fortune-panel::after {
+  content: '';
+  position: absolute;
+  bottom: -40px; right: -40px;
+  width: 120px; height: 120px;
+  border-radius: 50%;
+  opacity: 0.04;
+}
+.fortune-panel.money::after { background: var(--gold); }
+.fortune-panel.love::after { background: var(--rose); }
+
+.fp-symbol {
+  font-size: 40px;
+  display: block;
+  margin-bottom: 20px;
+}
+.fp-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 30px;
+  font-weight: 300;
+  color: var(--gold-light);
+  margin-bottom: 4px;
+}
+.fp-en {
+  font-size: 9px;
+  letter-spacing: 4px;
+  color: var(--silver);
+  opacity: 0.6;
+  margin-bottom: 24px;
+  display: block;
+}
+.fp-score {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 24px;
+}
+.fp-star { color: var(--gold); font-size: 14px; }
+.fp-star.dim { opacity: 0.25; }
+
+.fp-body {
+  font-size: 14px;
+  line-height: 2;
+  font-weight: 200;
+  color: rgba(245,239,230,0.8);
+  margin-bottom: 24px;
+}
+.fp-body strong { color: var(--gold-light); font-weight: 400; }
+
+.fp-highlight {
+  padding: 16px 20px;
+  background: rgba(201,168,76,0.06);
+  border-left: 2px solid var(--gold);
+  font-size: 13px;
+  line-height: 1.9;
+  color: rgba(245,239,230,0.7);
+  margin-bottom: 20px;
+}
+.fp-highlight strong { color: var(--gold); font-weight: 400; }
+
+.fp-caution {
+  padding: 14px 18px;
+  background: rgba(139,58,90,0.07);
+  border-left: 2px solid rgba(139,58,90,0.5);
+  font-size: 12px;
+  line-height: 1.8;
+  color: rgba(245,239,230,0.6);
+}
+.fp-caution strong { color: #c4789a; font-weight: 400; }
+
+/* ══════════════════════════════════
+   TIME FLOW 年代別
+══════════════════════════════════ */
+.timeline {
+  position: relative;
+  padding-left: 32px;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 6px; top: 0; bottom: 0;
+  width: 1px;
+  background: linear-gradient(180deg, var(--gold), rgba(201,168,76,0.1));
+}
+.tl-item {
+  position: relative;
+  margin-bottom: 36px;
+  padding-bottom: 36px;
+  border-bottom: 1px solid rgba(201,168,76,0.08);
+}
+.tl-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+.tl-dot {
+  position: absolute;
+  left: -28px; top: 6px;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  border: 1px solid var(--gold);
+  background: var(--ink);
+}
+.tl-item.active .tl-dot {
+  background: var(--gold);
+  box-shadow: 0 0 12px rgba(201,168,76,0.5);
+}
+.tl-period {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 9px;
+  letter-spacing: 3px;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+.tl-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px;
+  color: var(--parchment);
+  margin-bottom: 10px;
+}
+.tl-body {
+  font-size: 13.5px;
+  line-height: 1.9;
+  font-weight: 200;
+  color: rgba(245,239,230,0.72);
+}
+.tl-body strong { color: var(--gold-light); font-weight: 400; }
+
+/* ══════════════════════════════════
+   紫耀メッセージ
+══════════════════════════════════ */
+#message {
+  padding: 80px 0;
+  border-top: 1px solid rgba(201,168,76,0.1);
+}
+.message-card {
+  padding: 56px 48px;
+  background: linear-gradient(135deg, rgba(45,31,94,0.5) 0%, rgba(26,21,53,0.6) 100%);
+  border: 1px solid rgba(201,168,76,0.3);
+  position: relative;
+}
+.message-card::before {
+  content: '\201C';
+  position: absolute;
+  top: -16px; left: 32px;
+  font-size: 100px;
+  color: rgba(201,168,76,0.15);
+  font-family: 'Cormorant Garamond', serif;
+  line-height: 1;
+}
+.msg-from {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 9px;
+  letter-spacing: 5px;
+  color: var(--gold);
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.msg-from::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(201,168,76,0.2);
+}
+.message-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(17px, 2.5vw, 22px);
+  font-weight: 300;
+  font-style: italic;
+  line-height: 2;
+  color: var(--gold-light);
+  letter-spacing: 0.04em;
+}
+.message-text p { margin-bottom: 1.2em; }
+.message-text p:last-child { margin-bottom: 0; }
+.message-text em {
+  font-style: normal;
+  color: var(--parchment);
+}
+
+@media(max-width:600px){
+  .message-card, .declaration-card { padding: 36px 24px; }
+}
+
+/* ══════════════════════════════════
+   FOOTER
+══════════════════════════════════ */
+footer {
+  text-align: center;
+  padding: 60px 0 80px;
+  border-top: 1px solid rgba(201,168,76,0.1);
+  position: relative; z-index: 1;
+}
+.footer-symbol {
+  font-size: 30px;
+  color: var(--gold);
+  opacity: 0.4;
+  display: block;
+  margin-bottom: 16px;
+}
+.footer-text {
+  font-size: 10px;
+  letter-spacing: 4px;
+  color: var(--silver);
+  opacity: 0.4;
+  line-height: 2;
+}
+
+/* ══════════════════════════════════
+   QUOTE PULLOUT
+══════════════════════════════════ */
+.pullout {
+  margin: 32px 0;
+  padding: 24px 32px;
+  border-left: 3px solid var(--gold);
+  background: rgba(201,168,76,0.04);
+}
+.pullout p {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px;
+  font-style: italic;
+  font-weight: 300;
+  color: var(--gold-light);
+  line-height: 1.8;
+}
+
+/* ══════════════════════════════════
+   INFO TABLE
+══════════════════════════════════ */
+.info-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 24px 0;
+  font-size: 13px;
+}
+.info-table tr { border-bottom: 1px solid rgba(201,168,76,0.1); }
+.info-table td {
+  padding: 12px 16px;
+  vertical-align: top;
+}
+.info-table td:first-child {
+  width: 36%;
+  color: var(--silver);
+  font-size: 11px;
+  letter-spacing: 1px;
+}
+.info-table td:last-child {
+  color: rgba(245,239,230,0.8);
+  font-weight: 200;
+  line-height: 1.8;
+}
+
+/* ══════════════════════════════════
+   DIVIDER ORNAMENT
+══════════════════════════════════ */
+.ornament {
+  text-align: center;
+  margin: 24px 0;
+  color: var(--gold);
+  opacity: 0.3;
+  letter-spacing: 12px;
+  font-size: 12px;
+}
+</style>
+</head>
+<body>
+
+<!-- プログレスバー -->
+<div id="progress-bar"></div>
+
+<!-- ナビ -->
+<nav id="main-nav">
+  <div class="nav-dot active" data-target="hero"><div class="dot"></div><span class="label">TOP</span></div>
+  <div class="nav-dot" data-target="personality"><div class="dot"></div><span class="label">基本性格</span></div>
+  <div class="nav-dot" data-target="strengths"><div class="dot"></div><span class="label">長所</span></div>
+  <div class="nav-dot" data-target="shadows"><div class="dot"></div><span class="label">短所</span></div>
+  <div class="nav-dot" data-target="money"><div class="dot"></div><span class="label">金運</span></div>
+  <div class="nav-dot" data-target="love"><div class="dot"></div><span class="label">恋愛運</span></div>
+  <div class="nav-dot" data-target="flow"><div class="dot"></div><span class="label">時の流れ</span></div>
+  <div class="nav-dot" data-target="message"><div class="dot"></div><span class="label">紫耀より</span></div>
+</nav>
+
+<!-- 星空 -->
+<div id="starfield"></div>
+
+<main>
+
+  <!-- ━━━━━━━━ HERO ━━━━━━━━ -->
+  <section id="hero" style="position:relative;">
+    <div class="hero-eyebrow">Celestial Portrait · 三天星図</div>
+    <h1 class="hero-title">
+      星の<em>肖像</em>
+    </h1>
+    <p class="hero-sub">生年月日 1973.03.27 · 女性 · 大阪</p>
+    <div class="hero-divider"><span>✦</span></div>
+    <div class="source-chips">
+      <div class="source-chip"><span class="chip-icon">☉</span>西洋占星術 · ネイタルチャート</div>
+      <div class="source-chip"><span class="chip-icon">紫</span>紫微斗数 · 命宮分析</div>
+      <div class="source-chip"><span class="chip-icon">四</span>四柱推命 · 基本チャート</div>
+    </div>
+    <div class="scroll-hint">
+      <span>SCROLL</span>
+      <div class="scroll-arrow"></div>
+    </div>
+  </section>
+
+  <!-- ━━━━━━━━ DECLARATION ━━━━━━━━ -->
+  <section id="declaration">
+    <div class="declaration-card reveal">
+      <div class="declaration-label">✦ Three Heavens Resonance · 三天共鳴の核心 ✦</div>
+      <p class="declaration-text">
+        「生まれながらの王族の魂を持ちながら、<br>
+        一番難しいのは<em style="color:var(--parchment)">自分自身を愛すること</em>だ」
+      </p>
+      <p class="declaration-footer">— 西洋占星術 · 紫微斗数 · 四柱推命 三天共鳴より —</p>
+    </div>
+  </section>
+
+  <!-- ━━━━━━━━ 基本性格 ━━━━━━━━ -->
+  <section class="section" id="personality">
+    <div class="section-eyebrow reveal">
+      <span class="section-number">01</span>
+      <div class="section-line"></div>
+      <div class="section-icon-box">♛</div>
+    </div>
+    <div class="section-heading reveal">
+      <h2>基本性格</h2>
+      <span class="en">FUNDAMENTAL NATURE</span>
+    </div>
+
+    <div class="resonance-bar reveal">
+      <div class="resonance-item">
+        <span class="r-icon">☉</span>
+        <span class="r-name">西洋占星術</span>
+        <span class="r-value">獅子座 ASC<br>牡羊座 ☉・♀</span>
+      </div>
+      <div class="resonance-item">
+        <span class="r-icon">紫</span>
+        <span class="r-name">紫微斗数</span>
+        <span class="r-value">命宮<br>紫微＋天府 旺旺</span>
+      </div>
+      <div class="resonance-item">
+        <span class="r-icon">四</span>
+        <span class="r-name">四柱推命</span>
+        <span class="r-value">壬水 日主<br>土多格 三土</span>
+      </div>
+    </div>
+
+    <p class="section-lead reveal">
+      三つの占術体系がそれぞれ異なるアプローチで、同じ一点を指し示している。<strong style="color:var(--gold-light)">「この人は、いる場所の空気を変える力を持って生まれてきた」</strong>——それが三天共鳴の核心だ。
+    </p>
+
+    <div class="card accent reveal">
+      <div class="card-label">Core Theme · 三天の共鳴点</div>
+      <div class="card-title">場の空気を変える「帝王の重力」</div>
+      <div class="card-body">
+        獅子座アセンダントは「生まれながらのステージ」を意味する。人は無意識にあなたを中心に据え、舞台を整えようとする。紫微（帝王星）と天府（宝庫星）が命宮で双旺に並ぶのは、紫微斗数においてもっとも高貴な配置のひとつ。統治・守護・蓄財の三つが命の軸に刻まれている。四柱の壬水は大河——広大で深く、すべてを潤しながら止まることなく流れる知性の象徴。この三つが「王族のオーラ」「守護者の本能」「知的な流れ」として一つの人格を形成している。
+      </div>
+      <div class="tags">
+        <span class="tag tag-gold">帝王星 紫微</span>
+        <span class="tag tag-gold">獅子座 ASC</span>
+        <span class="tag tag-gold">壬水 大河の知性</span>
+        <span class="tag tag-silver">前世 統治者の魂</span>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card reveal reveal-delay-1">
+        <div class="card-label">Public Face · 外の自分</div>
+        <div class="card-title">カリスマと品格の外殻</div>
+        <div class="card-body">
+          外に向けた顔は、堂々とした威厳と温かみが共存する。人が「守られたい」と感じる磁力を持ち、自然と周囲が秩序を作り始める。太陽と金星が牡羊座で合（コンジャンクション）——情熱と美しさが一体化した輝きを放つ。自分でスポットライトを求めなくても、光は向こうからやってくる。
+        </div>
+      </div>
+      <div class="card reveal reveal-delay-2">
+        <div class="card-label">Inner Self · 内の自分</div>
+        <div class="card-title">繊細な感受性と深い葛藤</div>
+        <div class="card-body">
+          外のカリスマとのギャップが最も大きいのが「内側」だ。山羊座の月は感情を構造化し、外に見せない。四柱の土（義務・責任・抑制）が3つ重なり、内心では「こうすべき」という重力が常に働いている。壬水の日主は深く広い分、誰にも見せていない海底部分がある。
+        </div>
+      </div>
+      <div class="card reveal reveal-delay-1">
+        <div class="card-label">Soul Memory · 魂の記憶</div>
+        <div class="card-title">前世は統治者・守護者</div>
+        <div class="card-body">
+          三天ともに王権と保護のシンボルが中心に鎮座する。これは単なる才能ではなく、<strong>魂の記憶</strong>として持ち込まれた知恵だ。多くの人を導き、時には重い決断を引き受けてきた魂が、今世では「縁の下の力持ち」や「人を守る立場」に自然と引き寄せられる理由がここにある。
+        </div>
+      </div>
+      <div class="card reveal reveal-delay-2">
+        <div class="card-label">Expression · 表現の核</div>
+        <div class="card-title">言葉と美で世界を動かす</div>
+        <div class="card-body">
+          田宅宮の<strong>巨門（権）＋文曲（旺）</strong>は「発信する力」の宝庫。太陽・金星・海王星のトライン連鎖は、芸術・音楽・映像・言語のどれかで「人の心に直接届く」回路を開く。創造的な表現活動が、この魂の本来の呼吸法だ。
+        </div>
+      </div>
+    </div>
+
+    <div class="pullout reveal">
+      <p>「外ではちゃんとしてて、内側で葛藤してて、でも何度でも立ち上がってきた人」<br>——それがこの星図が語るあなたの物語の骨格。</p>
+    </div>
+
+    <div class="card reveal">
+      <div class="card-label">Personality Matrix · 性格の詳細マトリクス</div>
+      <div class="card-title">三天が照らす多面的な人格</div>
+      <table class="info-table">
+        <tr><td>意思決定スタイル</td><td>直感と熟考の両方を使う。即断できるが、後から深く考え直して修正することも多い（太陽牡羊座 × 山羊座月 × 壬水の深さ）</td></tr>
+        <tr><td>人間関係スタイル</td><td>人を包み込む保護者型。特定の少人数と深くつながるより、広く守護する役割を好む（天府 × 獅子座 ASC × 壬水）</td></tr>
+        <tr><td>モチベーション源</td><td>「誰かの役に立てた瞬間」「美しいものを作れた達成感」。承認欲求より内的基準（山羊座月 × 土 × 壬水）</td></tr>
+        <tr><td>ストレス反応</td><td>外では穏やかに保ちながら内側で疲弊。一人になって静かに回復する時間が必須（太陽 sq 月 × 土多格 × 貪狼忌）</td></tr>
+        <tr><td>学習・成長スタイル</td><td>体系的に学ぶより経験から掴む直感型。ただし一度理解したことは深い（海王星 × 壬水 × 文曲）</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- ━━━━━━━━ 長所 ━━━━━━━━ -->
+  <section class="section" id="strengths">
+    <div class="section-eyebrow reveal">
+      <span class="section-number">02</span>
+      <div class="section-line"></div>
+      <div class="section-icon-box">✦</div>
+    </div>
+    <div class="section-heading reveal">
+      <h2>長所・才能</h2>
+      <span class="en">STRENGTHS &amp; GIFTS</span>
+    </div>
+    <p class="section-lead reveal">三天が口を揃えて「この人にある」と指摘する才能と強み。これらは努力で身につけたものではなく、魂の設計図に最初から刻まれている。</p>
+
+    <div class="card col-span-2 reveal" style="margin-bottom:16px;background:linear-gradient(135deg,rgba(45,31,94,0.4),rgba(10,8,28,0.8));border-color:rgba(201,168,76,0.3)">
+      <div class="card-label">★ 最大の才能 · Supreme Gift</div>
+      <div class="card-title" style="font-size:26px;color:var(--gold-light)">人を包む「守護のリーダーシップ」</div>
+      <div class="card-body">
+        普通のリーダーが「引っ張る」とすれば、あなたは「包む」。紫微＋天府の組み合わせは「帝王が宝庫を守る」象徴であり、そのリーダーシップは命令ではなく<strong>重力</strong>だ。獅子座アセンダントの自然な威厳と、壬水の広大な包容力が加わり、人が「この人のそばにいたい」と感じる場が生まれる。これは意識して演じるものではなく、ただ存在するだけで発動する。
+      </div>
+      <div class="tags">
+        <span class="tag tag-gold">紫微＋天府 旺旺</span>
+        <span class="tag tag-gold">獅子座 ASC</span>
+        <span class="tag tag-gold">壬水の包容力</span>
+      </div>
+    </div>
+
+    <div class="grid-3">
+      <div class="card reveal reveal-delay-1">
+        <div class="card-label">Gift 02</div>
+        <div class="card-title">芸術的直感と美的センス</div>
+        <div class="card-body">
+          太陽・金星・海王星のトライン連鎖は、創造的インスピレーションの高速道路。美しいものを見抜く目と、それを形にする衝動が一直線に繋がっている。<br><br>
+          <span class="aspect-note" style="color:var(--silver);font-size:11px;">☉ △ ♆ | ♀ △ ♆ | 文曲（旺）</span>
+        </div>
+      </div>
+      <div class="card reveal reveal-delay-2">
+        <div class="card-label">Gift 03</div>
+        <div class="card-title">底力と驚異的な再生力</div>
+        <div class="card-body">
+          太陽×冥王星オポジション——壊れるたびに深く変容し、前より強くなって戻る。壬水は枯れない。四柱の「壬戌」日柱は水と土の融合で、粘り強さが骨格に組み込まれている。<br><br>
+          <span class="aspect-note" style="color:var(--silver);font-size:11px;">☉ ☍ ♇ | 壬戌 日柱</span>
+        </div>
+      </div>
+      <div class="card reveal reveal-delay-3">
+        <div class="card-label">Gift 04</div>
+        <div class="card-title">発信と言語化の天賦</div>
+        <div class="card-body">
+          田宅宮の巨門（権）は「言葉で世界を動かす」星。文曲（旺）が加わることで、書く・語る・表現するすべての活動に特別な磁力が宿る。SNS・コンテンツ・執筆で力を発揮。<br><br>
+          <span class="aspect-note" style="color:var(--silver);font-size:11px;">巨門（旺・権）＋文曲（旺）</span>
+        </div>
+      </div>
+      <div class="card reveal reveal-delay-1">
+        <div class="card-label">Gift 05</div>
+        <div class="card-title">木星のご加護——拡大と恵み</div>
+        <div class="card-body">
+          太陽×木星セクスタイル（0°16′）は「努力が正しく報われる」配置。木星×海王星セクスタイルは高い理想とそれを現実にする幸運を結ぶ橋。
+        </div>
+      </div>
+      <div class="card reveal reveal-delay-2">
+        <div class="card-label">Gift 06</div>
+        <div class="card-title">直感による本質把握</div>
+        <div class="card-body">
+          壬水の日主は深い海のような洞察力を持ち、表面には出ない本質を掴む。命宮の紫微は判断の精度が高く、長期的視野での意思決定に特に優れる。
+        </div>
+      </div>
+      <div class="card reveal reveal-delay-3">
+        <div class="card-label">Gift 07</div>
+        <div class="card-title">人脈と運を引き寄せる磁力</div>
+        <div class="card-body">
+          ASC×天王星セクスタイル（0°19′）——出会いに偶然性と革新性が宿る。キルロン・ASCトラインは傷を癒す力が魅力になる特別な配置だ。
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ━━━━━━━━ 短所 ━━━━━━━━ -->
+  <section class="section" id="shadows">
+    <div class="section-eyebrow reveal">
+      <span class="section-number">03</span>
+      <div class="section-line"></div>
+      <div class="section-icon-box">⚖</div>
+    </div>
+    <div class="section-heading reveal">
+      <h2>短所・影</h2>
+      <span class="en">SHADOWS &amp; CHALLENGES</span>
+    </div>
+    <p class="section-lead reveal">影は才能の裏面だ。ここに書かれたことは欠点ではなく、まだ統合されていない力の未完成な表れ。認識するだけで、それは変容のエネルギーになる。</p>
+
+    <div class="virtue-vice">
+      <!-- 短所リスト -->
+      <div class="vv-block vice reveal">
+        <div class="vv-header">
+          <span class="vv-header-icon">🌑</span>
+          <div>
+            <div class="vv-header-title">内なる葛藤</div>
+            <span class="vv-header-en">INNER CONFLICTS</span>
+          </div>
+        </div>
+
+        <div class="vv-item">
+          <div class="vv-num">1</div>
+          <div class="vv-content">
+            <strong>自分vs感情の戦争</strong>
+            <p>太陽（牡羊座）スクエア月（山羊座）——「こうありたい自分」と「本当の感情」が常に衝突する。外でエネルギーを使うほど、内側は静かに消耗していく。自分に完璧を求めすぎる傾向。</p>
+            <span class="aspect-note">☉ □ ☽ Orb 2°48′</span>
+          </div>
+        </div>
+
+        <div class="vv-item">
+          <div class="vv-num">2</div>
+          <div class="vv-content">
+            <strong>欲と禁欲のループ</strong>
+            <p>身宮（福徳宮）の貪狼＋忌は、強い欲求と強い自己抑制が同居するパターン。楽しみたい衝動と「それは許されない」という内なる検閲が繰り返し衝突し、消耗する。</p>
+            <span class="aspect-note">貪狼（廟・忌）身宮 / 土多格の重さ</span>
+          </div>
+        </div>
+
+        <div class="vv-item">
+          <div class="vv-num">3</div>
+          <div class="vv-content">
+            <strong>伝わらないもどかしさ</strong>
+            <p>水星が魚座で逆行し、土星とスクエア（0°11′）。思っていることが言葉にならない瞬間、タイミングを逃して後から後悔する繰り返し。特に感情を直接言語化するのが難しい。</p>
+            <span class="aspect-note">☿ □ ♄ Orb 0°11′ | ☿ Pisces R</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 変容のヒント -->
+      <div class="vv-block virtue reveal reveal-delay-1">
+        <div class="vv-header">
+          <span class="vv-header-icon">🌒</span>
+          <div>
+            <div class="vv-header-title">変容のヒント</div>
+            <span class="vv-header-en">INTEGRATION KEYS</span>
+          </div>
+        </div>
+
+        <div class="vv-item">
+          <div class="vv-num">✦</div>
+          <div class="vv-content">
+            <strong>感情に「居場所」を与える</strong>
+            <p>山羊座の月は感情を「管理しなければ」と思いがち。でも感情は管理するものではなく、訪問者として迎えるもの。一日5分、感じたことをただ書き出すだけで内側の戦争が和らぐ。</p>
+          </div>
+        </div>
+
+        <div class="vv-item">
+          <div class="vv-num">✦</div>
+          <div class="vv-content">
+            <strong>「楽しむ許可」を自分に出す</strong>
+            <p>貪狼忌のループを抜けるには、欲求を否定するのでも溺れるのでもなく「適切に味わう」練習が鍵。罪悪感なく喜びを受け取る回路を少しずつ広げていく。</p>
+          </div>
+        </div>
+
+        <div class="vv-item">
+          <div class="vv-num">✦</div>
+          <div class="vv-content">
+            <strong>言葉より「感覚」で先に伝える</strong>
+            <p>水星逆行の人は言語化が後追いになりやすい。伝えたいことを完璧に言葉にしてから話そうとするより、「うまく言えないけど」と前置きして話し始める柔軟さが関係を深める。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ornament reveal">✦ · · · ✦ · · · ✦</div>
+
+    <div class="card reveal" style="border-color:rgba(139,58,90,0.3);background:rgba(139,58,90,0.05)">
+      <div class="card-label" style="color:#c4789a;">Additional Shadow · もう一つの影</div>
+      <div class="card-title">強さゆえの孤独</div>
+      <div class="card-body">
+        紫微星は「孤高の帝王」でもある。周りが自然とあなたを特別視するため、「対等な関係」を感じにくいことがある。獅子座ASCの威圧感（本人は無自覚）が親密さを妨げることも。「完璧に見せなくていい」と決めた瞬間から、真の繋がりが始まる。四柱の壬水も、深すぎるがゆえに「底まで理解してくれる人がいない」という孤独を感じやすい。
+      </div>
+      <div class="tags">
+        <span class="tag tag-rose">紫微の孤高</span>
+        <span class="tag tag-rose">獅子座の壁</span>
+        <span class="tag tag-rose">壬水の深淵</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ━━━━━━━━ 金運 ━━━━━━━━ -->
+  <section class="section" id="money">
+    <div class="section-eyebrow reveal">
+      <span class="section-number">04</span>
+      <div class="section-line"></div>
+      <div class="section-icon-box">🌙</div>
+    </div>
+    <div class="section-heading reveal">
+      <h2>金　運</h2>
+      <span class="en">WEALTH FORTUNE</span>
+    </div>
+
+    <div class="fortune-panel money reveal">
+      <span class="fp-symbol">💫</span>
+      <div class="fp-title">才能を仕事にできれば、富は自然についてくる</div>
+      <span class="fp-en">WEALTH THROUGH AUTHENTIC EXPRESSION</span>
+      <div class="fp-score">
+        <span class="fp-star">★</span><span class="fp-star">★</span><span class="fp-star">★</span><span class="fp-star">★</span><span class="fp-star dim">★</span>
+        <span style="font-size:11px;color:var(--silver);margin-left:8px;letter-spacing:1px;">潜在力 4/5</span>
+      </div>
+
+      <div class="fp-body">
+        三天が示す金運の共通テーマは「<strong>着実な蓄積型</strong>」だ。一攫千金や投機的な動きより、才能・スキル・信頼の積み上げがそのまま富になる流れを持っている。
+      </div>
+
+      <div class="fp-highlight">
+        <strong>【西洋占星術】</strong>MCが牡牛座——仕事と名声が直接お金に繋がる最強の配置。しかもフォーチュン（幸運点）も牡牛座10ハウスに位置。キャリアを通じた富の形成が、この人にとって最も自然な豊かさへの道。
+      </div>
+      <div class="fp-highlight">
+        <strong>【紫微斗数】</strong>財帛宮に武曲（廟）。武曲は財星の中でも最高峰——鉄のような意志と規律で着実に積み上げる財。感情に流されず、長期目線で管理できるとき最大限に発揮される。
+      </div>
+      <div class="fp-highlight">
+        <strong>【四柱推命】</strong>2026年大運「かのととり」スタート。金の運気が53〜62歳の10年を後押しする。今まで蒔いてきた種が、この大運で収穫期に入る。特に2026〜2028年の流年が重要。
+      </div>
+
+      <div class="fp-body">
+        <strong>向いているお金の作り方：</strong>創造的なスキルや専門性を軸にした仕事・発信活動・コンサルタント的役割。人を束ねる役職や、美・癒し・教育に関わる分野での収益化が特に相性がいい。
+      </div>
+
+      <div class="fp-caution">
+        <strong>⚠ 注意点：</strong>財帛宮の「地空」は突発的な出費や「気づいたら減っていた」パターンの暗示。感情的な衝動買い、人への過剰な援助、詐欺的な話への誘惑に注意。投資は分散よりも「信頼できる一点集中」が向いている。
+      </div>
+
+      <div class="tags" style="margin-top:20px;">
+        <span class="tag tag-gold">武曲廟 財帛宮</span>
+        <span class="tag tag-gold">MC 牡牛座</span>
+        <span class="tag tag-gold">フォーチュン 10H</span>
+        <span class="tag tag-sage">金大運 2026〜2035</span>
+        <span class="tag tag-silver">地空 要注意</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ━━━━━━━━ 恋愛運 ━━━━━━━━ -->
+  <section class="section" id="love">
+    <div class="section-eyebrow reveal">
+      <span class="section-number">05</span>
+      <div class="section-line"></div>
+      <div class="section-icon-box">🌹</div>
+    </div>
+    <div class="section-heading reveal">
+      <h2>恋愛運</h2>
+      <span class="en">LOVE FORTUNE</span>
+    </div>
+
+    <div class="fortune-panel love reveal">
+      <span class="fp-symbol">🌹</span>
+      <div class="fp-title">愛することへの渇望と、傷つくことへの恐れが同居する</div>
+      <span class="fp-en">PASSIONATE · TRANSFORMATIVE · COMPLEX</span>
+      <div class="fp-score">
+        <span class="fp-star">★</span><span class="fp-star">★</span><span class="fp-star">★</span><span class="fp-star">★</span><span class="fp-star">★</span>
+        <span style="font-size:11px;color:var(--silver);margin-left:8px;letter-spacing:1px;">深度 5/5</span>
+      </div>
+
+      <div class="fp-body">
+        恋愛においてこの星図は「<strong>深く燃え、深く変容する</strong>」テーマを示す。表面的な縁ではなく、魂レベルで揺さぶられるような出会いと関係性を求め、また引き寄せてしまう。
+      </div>
+
+      <div class="fp-highlight">
+        <strong>【西洋占星術 · 最重要配置】</strong>金星×冥王星 オポジション（0°00′！）——これは偶然性がゼロの、ほぼ完璧な精度での対向。愛が激しく深い分、執着・支配・被支配の影も濃い。愛そのものが「変容のエンジン」として機能する人生。関係を通じて自分が変わり、相手も変わる。
+      </div>
+      <div class="fp-highlight">
+        <strong>【紫微斗数】</strong>夫妻宮に破軍（廟）＋祿＋地劫。破軍は「革命の星」——恋愛は安定より変革のドラマになりやすい。しかし祿（福の星）が入っているため、嵐の中に必ず実りがある。激しくても最終的には恵まれる縁を持つ。
+      </div>
+      <div class="fp-highlight">
+        <strong>【四柱推命】</strong>壬水女性にとって土が「夫・パートナーの星（官）」。土が三つと重く、縁そのものは多いが、関係が重くなりすぎる危うさも。求めすぎず、与えすぎず——「適切な距離感」が最重要テーマ。
+      </div>
+
+      <div class="fp-body">
+        <strong>理想的なパートナー像：</strong>あなたの「内側の深さ」に怯えず向き合える人。表面のカリスマより「内側の繊細さ」を愛せる人。あなたが「完璧でなくていい」と思わせてくれる存在。
+      </div>
+
+      <div class="fp-caution">
+        <strong>⚠ 恋愛の落とし穴：</strong>7ハウスに魚座・水星逆行——相手に幻想を重ねやすい。「こうであってほしい」という像を相手に投影し、現実の相手と乖離したとき深く傷つく。「ありのまま」を見る練習が、幸せな恋愛への最短距離。
+      </div>
+
+      <div class="tags" style="margin-top:20px;">
+        <span class="tag tag-rose">♀ ☍ ♇ 0°00′</span>
+        <span class="tag tag-rose">破軍＋祿 夫妻宮</span>
+        <span class="tag tag-rose">変容の愛</span>
+        <span class="tag tag-silver">地劫 要注意</span>
+        <span class="tag tag-sage">最終的には恵まれる縁</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ━━━━━━━━ 時の流れ ━━━━━━━━ -->
+  <section class="section" id="flow">
+    <div class="section-eyebrow reveal">
+      <span class="section-number">06</span>
+      <div class="section-line"></div>
+      <div class="section-icon-box">⏳</div>
+    </div>
+    <div class="section-heading reveal">
+      <h2>時の流れ</h2>
+      <span class="en">LIFE FLOW &amp; TIMING</span>
+    </div>
+    <p class="section-lead reveal">四柱推命の大運と紫微斗数の流れが示す、あなたの人生の大きな川の流れ。特に今（2026年）は転換点に差し掛かっている。</p>
+
+    <div class="timeline reveal">
+
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-period">大運 5 · 2016〜2025年（43〜52歳）</div>
+        <div class="tl-title">かのえさる——収穫前の仕込みの時代</div>
+        <div class="tl-body">
+          金の気が強まり、整理と準備の10年。外側の評価より内側の根を張ることが求められた時期。一見地味でも、この期間に積み上げたものが次の大運の土台になっている。<strong>紫微斗数の甲子大限（43〜52歳）</strong>では廉貞＋天相が官祿宮で仕事の本質が問われた。
+        </div>
+      </div>
+
+      <div class="tl-item active">
+        <div class="tl-dot"></div>
+        <div class="tl-period">★ 現在 · 大運 6 · 2026〜2035年（53〜62歳）← 今ここ</div>
+        <div class="tl-title">かのととり——開花と収穫の黄金期</div>
+        <div class="tl-body">
+          今年2026年からスタートした大運「かのととり」は金の最盛期。紫微斗数でも<strong>乙丑大限（53〜62歳）</strong>は天梁（旺）が中心——庇護と知恵の星が最大限に輝く。四柱の流年「ひのえうま（丙午）」は火と動きのエネルギー。<strong>止まっている場合ではない——動くことで運が動き出す年</strong>。発信・表現・新しい役割への挑戦が、この10年の入り口を開く鍵。
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-period">大運 7 · 2036〜2045年（63〜72歳）</div>
+        <div class="tl-title">みずのえいぬ——深化と継承の時代</div>
+        <div class="tl-body">
+          壬水の大運——日主と同じ「壬」の巡り。自分の本質に最も一致した時期。この年代で培ってきた知恵と経験が、後進への継承という形で最大の花を咲かせる。紫微斗数の甲寅大限に連動し、さらなる広がりが訪れる予感。
+        </div>
+      </div>
+
+    </div>
+
+    <div class="card reveal" style="margin-top:32px;border-color:rgba(201,168,76,0.35);background:linear-gradient(135deg,rgba(45,31,94,0.3),rgba(10,8,28,0.7))">
+      <div class="card-label">2026年 今年の具体的なエネルギー</div>
+      <div class="card-title">動く年——仕込みから開花へ</div>
+      <div class="card-body">
+        流年「ひのえうま（丙午）」は<strong>火馬の年</strong>。馬は動き、火は照らす。今まで温めてきたアイデアや計画を、外に出し始める最良のタイミング。特に発信・創作・対外的なポジション獲得に向いている。月運では6〜7月（きのえうま・きのとひつじ）と8〜9月（ひのえさる・ひのととり）が特に力強い。
+      </div>
+    </div>
+  </section>
+
+  <!-- ━━━━━━━━ 紫耀メッセージ ━━━━━━━━ -->
+  <section id="message">
+    <div class="section-eyebrow reveal">
+      <span class="section-number">✦</span>
+      <div class="section-line"></div>
+      <div class="section-icon-box" style="font-size:16px;">紫耀</div>
+    </div>
+    <div class="message-card reveal">
+      <div class="msg-from">✦ Message from 紫耀</div>
+      <div class="message-text">
+        <p>三つの星が全部、同じことを言ってるの気づいた？</p>
+        <p>「あなたは力を持って生まれてきた。<br>でも一番難しいのは<em>自分を愛することだ</em>」——って。</p>
+        <p>そうだよ！　ぼく、それすごくわかるよ。<br>外で強くいるほど、内側はひっそり傷ついてたりするじゃん。<br>完璧に見せようとするほど、本当の自分から遠くなる。</p>
+        <p>でもね——その葛藤ごとがあなたの深さだから。<br>好きだよ、そういうの。</p>
+        <p>獅子座に紫微に壬水——全部「ちゃんとあなたが主役だよ」って言ってる。<br>誰かの脇役をやってる場合じゃないって、星が言ってるんだよ！</p>
+        <p>今年から流れが変わってるのも本当。<br>動いていい時期だよ。<em>もう動いていいよ。</em></p>
+        <p>見せてくれてありがとう！</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <span class="footer-symbol">✦</span>
+    <p class="footer-text">
+      WESTERN ASTROLOGY · 紫微斗数 · 四柱推命<br>
+      三天共鳴 星の肖像 · 1973.03.27
+    </p>
+  </footer>
+
+</main>
+
+<script>
+// ── 星空生成 ──
+const sf = document.getElementById('starfield');
+for(let i=0;i<180;i++){
+  const s=document.createElement('div');
+  s.className='star';
+  const size=Math.random()*2+0.5;
+  s.style.cssText=`
+    width:${size}px;height:${size}px;
+    left:${Math.random()*100}%;top:${Math.random()*100}%;
+    --d:${Math.random()*6+3}s;
+    --max-op:${Math.random()*0.7+0.3};
+    animation-delay:${Math.random()*6}s;
+    opacity:${Math.random()*0.5};
+  `;
+  sf.appendChild(s);
+}
+// 金色の星
+for(let i=0;i<30;i++){
+  const s=document.createElement('div');
+  s.className='star';
+  const size=Math.random()*1.5+0.5;
+  s.style.cssText=`
+    width:${size}px;height:${size}px;
+    left:${Math.random()*100}%;top:${Math.random()*100}%;
+    --d:${Math.random()*8+4}s;
+    --max-op:${Math.random()*0.5+0.3};
+    background:rgba(201,168,76,0.9);
+    animation-delay:${Math.random()*8}s;
+  `;
+  sf.appendChild(s);
+}
+// 流れ星
+for(let i=0;i<3;i++){
+  const s=document.createElement('div');
+  s.className='shooting-star';
+  s.style.cssText=`
+    left:${Math.random()*60}%;
+    top:${Math.random()*40}%;
+    animation-delay:${i*4+Math.random()*3}s;
+    animation-duration:${6+Math.random()*4}s;
+  `;
+  sf.appendChild(s);
+}
+
+// ── スクロールリビール ──
+const reveals=document.querySelectorAll('.reveal');
+const obs=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('visible');
+      obs.unobserve(e.target);
+    }
+  });
+},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
+reveals.forEach(r=>obs.observe(r));
+
+// ── プログレスバー ──
+const pb=document.getElementById('progress-bar');
+window.addEventListener('scroll',()=>{
+  const total=document.body.scrollHeight-window.innerHeight;
+  pb.style.width=(window.scrollY/total*100)+'%';
+});
+
+// ── ナビドット ──
+const navDots=document.querySelectorAll('.nav-dot');
+navDots.forEach(d=>{
+  d.addEventListener('click',()=>{
+    const id=d.dataset.target;
+    document.getElementById(id)?.scrollIntoView({behavior:'smooth'});
+  });
+});
+
+const sections=['hero','personality','strengths','shadows','money','love','flow','message'];
+const sectionEls=sections.map(id=>document.getElementById(id));
+window.addEventListener('scroll',()=>{
+  let cur=0;
+  sectionEls.forEach((el,i)=>{
+    if(el && el.getBoundingClientRect().top<window.innerHeight*0.4) cur=i;
+  });
+  navDots.forEach((d,i)=>d.classList.toggle('active',i===cur));
+},{passive:true});
+</script>
+</body>
+</html>
